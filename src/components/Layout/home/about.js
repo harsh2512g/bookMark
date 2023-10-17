@@ -1,75 +1,89 @@
+'use client'
+import Image from 'next/image'
+import { useState, useRef } from 'react'
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+import SliderCard from './sliderCards'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
+const data = [
+  {
+    id: 1,
+    image: './slideImage1.png',
+    title: 'Empowerment with Sharing Economy',
+    description:
+      'Our platform encourages students to sell course textbooks to incoming course students.',
+  },
+  {
+    id: 2,
+    image: './slideImage2.png',
+    title: 'Affordability At Our Core',
+    description:
+      'BookMark’d guarantees to find our community the most affordable materials across all platforms with ease.',
+  },
+  {
+    id: 3,
+    image: './slideImage3.png',
+    title: 'Community for Campus Connection',
+    description:
+      'We are committed to creating a safe and secure platform for students to connect and engage on campus.',
+  },
+]
+const cardsToShow = {
+  desktop: 2.5,
+  bigTablet: 2.96,
+  tablet: 1.97,
+  mobile: 1,
+}
+
+const SCROLLER_VALUE = 350
+
 export function About() {
+  const swiperRef = useRef(null)
+  const [activeIndex, setactiveIndex] = useState(0)
+  console.log({ activeIndex, swiperRef })
+
+  const scrollTo = (amount) => {
+    const container = swiperRef.current
+    container.scrollLeft += amount
+  }
+
   return (
-    <div className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-center gap-x-8 gap-y-16 lg:grid-cols-2">
-          <div className="mx-auto w-full max-w-xl lg:mx-0">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-              Trusted by the most innovative teams
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et,
-              egestas tempus tellus etiam sed. Quam a scelerisque amet
-              ullamcorper eu enim et fermentum, augue.
-            </p>
-            <div className="mt-8 flex items-center gap-x-6">
-              <a
-                href="#"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Create account
-              </a>
-              <a href="#" className="text-sm font-semibold text-gray-900">
-                Contact us
-                {' '}
-                <span aria-hidden="true">&rarr;</span>
-              </a>
+    <div className="max-w-7xl mx-auto relative">
+      <div
+        className="text-green-400  bg-green-200 absolute top-[50%]  hover:bg-green-400  cursor-pointer"
+        onClick={() => scrollTo(-SCROLLER_VALUE)}
+      >
+        <ChevronLeft size={32} />
+      </div>
+      <div
+        className="text-green-400  w-50 h-50 bg-green-200 absolute top-[50%] right-0 hover:bg-green-400 cursor-pointer z-50"
+        onClick={() => scrollTo(+SCROLLER_VALUE)}
+      >
+        <ChevronRight size={32} />
+      </div>
+      <div className=" bg-[#128848] py-24 sm:py-32 flex items-center">
+        <div className="px-6 lg:px-10">
+          <div className="">
+            <div className="mx-auto w-full max-w-xl lg:mx-0">
+              <h2 className="w-[365px] text-3xl font-bold tracking-tight text-white">
+                While on campus, we’re here to help
+              </h2>
+              <p className="mt-6 text-lg leading-7 text-white font-normal">
+                Arrange a convenient meeting with the seller to pick up your
+                materials. This is a chance to connect with fellow students on
+                your campus.
+              </p>
             </div>
           </div>
-          <div className="mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8">
-            <img
-              className="max-h-12 w-full object-contain object-left"
-              src="https://tailwindui.com/img/logos/tuple-logo-gray-900.svg"
-              alt="Tuple"
-              width={105}
-              height={48}
-            />
-            <img
-              className="max-h-12 w-full object-contain object-left"
-              src="https://tailwindui.com/img/logos/reform-logo-gray-900.svg"
-              alt="Reform"
-              width={104}
-              height={48}
-            />
-            <img
-              className="max-h-12 w-full object-contain object-left"
-              src="https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg"
-              alt="SavvyCal"
-              width={140}
-              height={48}
-            />
-            <img
-              className="max-h-12 w-full object-contain object-left"
-              src="https://tailwindui.com/img/logos/laravel-logo-gray-900.svg"
-              alt="Laravel"
-              width={136}
-              height={48}
-            />
-            <img
-              className="max-h-12 w-full object-contain object-left"
-              src="https://tailwindui.com/img/logos/transistor-logo-gray-900.svg"
-              alt="Transistor"
-              width={158}
-              height={48}
-            />
-            <img
-              className="max-h-12 w-full object-contain object-left"
-              src="https://tailwindui.com/img/logos/statamic-logo-gray-900.svg"
-              alt="Statamic"
-              width={147}
-              height={48}
-            />
-          </div>
+        </div>
+
+        <div
+          className="swiperContainer flex flex-row gap-8 itema-center overflow-x-scroll scroll-smooth ease-in-out"
+          ref={swiperRef}
+        >
+          {data.map((ele, index) => (
+            <SliderCard index={index} data={data} ele={ele} />
+          ))}
         </div>
       </div>
     </div>

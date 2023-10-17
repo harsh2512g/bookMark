@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   darkMode: ['class'],
   content: [
+    './node_modules/flowbite-react/**/*.js',
     './pages/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
@@ -50,6 +52,9 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        fontFamily: {
+          sans: ['DM Sans', 'sans-serif'],
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -81,5 +86,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('flowbite/plugin')],
 }

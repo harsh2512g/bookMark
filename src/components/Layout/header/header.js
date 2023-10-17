@@ -4,18 +4,20 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import Link from 'next/link'
 import { X, AlignJustify } from 'lucide-react'
+import Image from 'next/image'
+import ProfileDropdown from './profileDropdown'
 
 const navigation = [
-  { name: 'About', href: '/about' },
-  { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'How it Works', href: '/about' },
+  { name: 'Marketplace', href: '/dashboard' },
+  { name: 'Contact Us', href: '/contact' },
 ]
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-gray-900">
+    <header className="bg-white fixed right-0 left-0 top-0 z-[100] bg-transparent'}">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -23,10 +25,12 @@ export function Header() {
         <div className="flex lg:flex-1">
           <Link href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt=""
+            <Image
+              src="./logo.svg"
+              height={90}
+              width={200}
+              className="mx-auto"
+              alt="Your Company"
             />
           </Link>
         </div>
@@ -50,25 +54,30 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-white"
+              className="text-green-700 text-lg font-bold"
             >
               {item.name}
             </Link>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
+          <Link href="#" className="text-green-700 text-lg font-bold mr-5">
+            Sell Textbooks
+          </Link>
           <Link
             href="/login"
-            className="text-sm font-semibold leading-6 mx-3 text-white"
+            className="text-sm font-semibold leading-6 mx-3 text-white mr-5"
           >
-            Log in
+            <Image
+              src="./Cart.svg"
+              height={90}
+              width={29}
+              className="mx-auto"
+              alt="Your Company"
+            />
           </Link>
-          <Link
-            href="/register"
-            className="text-sm font-semibold leading-6 mx3 text-white"
-          >
-            Register
-          </Link>
+
+          <ProfileDropdown />
         </div>
       </nav>
       <Dialog
