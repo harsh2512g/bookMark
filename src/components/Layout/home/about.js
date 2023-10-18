@@ -39,8 +39,7 @@ const SCROLLER_VALUE = 350
 
 export function About() {
   const swiperRef = useRef(null)
-  const [activeIndex, setactiveIndex] = useState(0)
-  console.log({ activeIndex, swiperRef })
+  console.log({ swiperRef })
 
   const scrollTo = (amount) => {
     const container = swiperRef.current

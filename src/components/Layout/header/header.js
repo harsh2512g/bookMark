@@ -9,7 +9,7 @@ import ProfileDropdown from './profileDropdown'
 
 const navigation = [
   { name: 'How it Works', href: '/about' },
-  { name: 'Marketplace', href: '/dashboard' },
+  { name: 'Marketplace', href: '/marketplace' },
   { name: 'Contact Us', href: '/contact' },
 ]
 
