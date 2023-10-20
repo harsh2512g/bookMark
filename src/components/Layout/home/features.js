@@ -51,12 +51,12 @@ const features = [
 
 export function Features() {
   return (
-    <div className="flex items-center max-w-7xl mx-auto bg-white py-24 sm:py-32">
+    <div className="lg:flex items-center max-w-7xl mx-auto bg-white py-24 sm:py-32">
       <div>
         <div className="px-6 lg:px-8">
           <div className="">
             <div className="mx-auto w-full max-w-xl lg:mx-0">
-              <h2 className="w-[365px] font-sans text-3xl font-bold tracking-tight  text-green-700  ">
+              <h2 className="w-[350px] md:w-[365px] font-sans text-3xl font-bold tracking-tight  text-green-700  ">
                 What your fellow students ask us:
               </h2>
             </div>

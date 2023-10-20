@@ -94,3 +94,42 @@
     height: 0;
   }
 }
+
+/* Chrome */
+.slider-thumb::-webkit-slider-thumb {
+  @apply w-5 h-5 bg-[#4ECB71] border-[#4ECB71] border-2 rounded-full cursor-pointer appearance-none mt-1; /* Adjusted styles */
+  margin-top: -0.4rem; /* Adjust for proper alignment */
+}
+
+.slider-track::-webkit-slider-runnable-track {
+  @apply h-1 bg-[#4ECB71] cursor-pointer;
+}
+
+.slider-thumb:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.5); /* Add green outline on focus */
+}
+/* Firefox */
+.slider-thumb::-moz-range-thumb {
+  @apply w-5 h-5 bg-green-500 border-green-500 border-2 rounded-full cursor-pointer;
+}
+
+.slider-track::-moz-range-track {
+  @apply h-1 bg-green-500 cursor-pointer;
+}
+
+/* IE */
+.slider-thumb::-ms-thumb {
+  @apply w-5 h-5 bg-[#4ECB71] border-[#4ECB71] border-2 rounded-full cursor-pointer;
+}
+
+.slider-track::-ms-track {
+  @apply w-full h-1 cursor-pointer bg-transparent border-0;
+}
+
+.slider-track::-ms-fill-lower {
+  @apply bg-[#4ECB71];
+}
+
+.slider-track::-ms-fill-upper {
+  @apply bg-gray-300;
+}

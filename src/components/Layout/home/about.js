@@ -39,8 +39,7 @@ const SCROLLER_VALUE = 350
 
 export function About() {
   const swiperRef = useRef(null)
-  const [activeIndex, setactiveIndex] = useState(0)
-  console.log({ activeIndex, swiperRef })
+  console.log({ swiperRef })
 
   const scrollTo = (amount) => {
     const container = swiperRef.current
@@ -65,7 +64,7 @@ export function About() {
         <div className="px-6 lg:px-10">
           <div className="">
             <div className="mx-auto w-full max-w-xl lg:mx-0">
-              <h2 className="w-[365px] text-3xl font-bold tracking-tight text-white">
+              <h2 className="w-[265px] text-3xl font-bold tracking-tight text-white">
                 While on campus, we’re here to help
               </h2>
               <p className="mt-6 text-lg leading-7 text-white font-normal">
