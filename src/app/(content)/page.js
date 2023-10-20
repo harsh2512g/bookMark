@@ -7,7 +7,14 @@ export default function Home() {
   const { uid, setUid } = useUidContext()
   setUid(Cookies.get('bookMarkUid'))
   return (
-    <div>
+    <div
+      className="w-[100%]"
+      style={{
+        minHeight: '100vh',
+
+        maxWidth: '100vw',
+      }}
+    >
       <Hero />
       <About />
       <Features />

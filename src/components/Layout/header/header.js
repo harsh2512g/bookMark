@@ -17,7 +17,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white  z-[100] bg-transparent'}">
+    <header className="bg-white fixed top-0 right-0 left-0 z-[100] bg-transparent'}">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -65,7 +65,7 @@ export function Header() {
             Sell Textbooks
           </Link>
           <Link
-            href="/login"
+            href="/cart"
             className="text-sm font-semibold leading-6 mx-3 text-white mr-5"
           >
             <Image
@@ -87,7 +87,7 @@ export function Header() {
         onClose={setMobileMenuOpen}
       >
         <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
           <div className="flex items-center justify-between">
             <Link href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
@@ -118,7 +118,8 @@ export function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-green-700 hover:bg-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
@@ -127,13 +128,13 @@ export function Header() {
               <div className="py-6">
                 <Link
                   href="/login"
-                  className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                  className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-green-700 hover:bg-gray-800"
                 >
                   Log in
                 </Link>
                 <Link
                   href="/register"
-                  className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                  className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-green-700 hover:bg-gray-800"
                 >
                   Register
                 </Link>

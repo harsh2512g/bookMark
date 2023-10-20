@@ -60,7 +60,7 @@ export function About() {
       >
         <ChevronRight size={32} />
       </div>
-      <div className=" bg-[#128848] py-24 sm:py-32 flex items-center">
+      <div className=" bg-[#128848] py-24 sm:py-32 flex flex-col md:flex-row items-center">
         <div className="px-6 lg:px-10">
           <div className="">
             <div className="mx-auto w-full max-w-xl lg:mx-0">
@@ -76,14 +76,14 @@ export function About() {
           </div>
         </div>
 
-        <div
-          className="swiperContainer flex flex-row gap-8 itema-center overflow-x-scroll scroll-smooth ease-in-out"
+        {/* <div
+          className="swiperContainer flex flex-row gap-8 item-center overflow-x-scroll scroll-smooth ease-in-out"
           ref={swiperRef}
         >
           {data.map((ele, index) => (
             <SliderCard index={index} data={data} ele={ele} />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   )

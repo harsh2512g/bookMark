@@ -48,8 +48,8 @@ export function Footer() {
   return (
     <footer className="bg-white" aria-labelledby="footer-heading">
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32 ">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
+        <div className="lg:flex justify-between items-center text-center  ">
+          <div className="flex items-center justify-center">
             <Image
               src="./logoImage.svg"
               height={10}
@@ -117,25 +117,26 @@ export function Footer() {
               </div>
             </div>
           </div>
-          <span>
+          <span className="flex flex-row lg:flex-col items-center justify-center mt-10">
             <Image
               src="./facebookIcon.svg"
               height={10}
               width={24}
-              className="mb-4"
+              className="mb-4 mr-4"
               alt="Your Company"
             />
             <Image
               src="./instagramIcon.svg"
               height={10}
               width={24}
-              className="mb-4"
+              className="mb-4 mr-4"
               alt="Your Company"
             />
             <Image
               src="./linkedInIcon.svg"
               height={10}
               width={24}
+              className="mb-4 mr-4"
               alt="Your Company"
             />
           </span>

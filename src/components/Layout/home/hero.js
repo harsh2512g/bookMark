@@ -2,14 +2,16 @@ import Image from 'next/image'
 
 export function Hero() {
   return (
-    <main>
-      <div className="relative px-6 lg:px-8">
-        <div className=" max-w-7xl py-32 sm:py-48 lg:py-56 bg-[url('/banner.svg')] mt-[-9%] xl:mt-[4%] bg-center bg-no-repeat w-full h-[400px] mx-auto">
-          <div className=""></div>
+    <main className="mt-24 ">
+      <div className="relative flex flex-col items-center">
+        <div className="flex items-center justify-center  max-w-7xl  bg-[url('/landingPageBanner.svg')] bg-center bg-no-repeat w-full h-[400px] mx-auto">
+          <div className="w-[300px] sm:w-[400px] lg:w-[773px] mx-auto text-center  text-white text-2xl sm:text-3xl lg:text-4xl leading-[40px] lg:leading-[55px] font-bold ">
+            You’re only 3 steps closer to a better college experience
+          </div>
         </div>
 
         {/* grids */}
-        <div className="max-w-7xl mx-auto grid grid-cols-2 grid-rows-3 ">
+        <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:grid-rows-3 ">
           {/* grid1 */}
           <div className="h-[630px] mx-auto grid place-content-center pl-5">
             <p className=" text-green-700 text-3xl font-bold mb-6">1. Browse</p>

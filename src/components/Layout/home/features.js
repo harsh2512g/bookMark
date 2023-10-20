@@ -63,7 +63,7 @@ export function Features() {
           </div>
         </div>
       </div>
-      <div className="container mx-auto mt-10 ml-10">
+      <div className="container lg:mx-auto mt-10 lg:ml-10">
         {features.map((d) => {
           return <Accordion title={d?.title}>{d?.description}</Accordion>
         })}

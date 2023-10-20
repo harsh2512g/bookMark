@@ -133,3 +133,10 @@
 .slider-track::-ms-fill-upper {
   @apply bg-gray-300;
 }
+
+.scroll-item-box {
+  min-width: 120px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

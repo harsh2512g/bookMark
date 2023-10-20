@@ -9,7 +9,7 @@ import {
 import { toast } from 'react-toastify'
 import { auth, firebase } from '../app'
 import { firestore } from '../firestore'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 
 export async function firebasesignUp({ username, email, password }) {
   console.log({ username, email, password })
@@ -64,12 +64,41 @@ export async function firebaseGetDoc(collectionName, id) {
   }
 }
 
+export async function firebaseGetAllDoc(collectionName) {
+  let arr = []
+  const snapshot = await getDocs(collection(firestore, collectionName))
+  snapshot.forEach((data) => {
+    arr.push(data.data())
+  })
+  return arr
+  // const docRef = doc(firestore, collectionName)
+  // console.log({ collectionName, docRef })
+  // const docSnap = await getDocs(docRef)
+  // console.log({ docSnap })
+  // if (docSnap.exists()) {
+  //   return docSnap.data()
+  // } else {
+  //   // docSnap.data() will be undefined in this case
+  //   console.log('No such document!')
+  // }
+}
+
 const firebaseAddDoc = async (data) => {
   try {
     const res = await setDoc(
       doc(firestore, 'users', `${auth.currentUser.uid}`),
       data,
     )
+    return true
+  } catch (error) {
+    console.log('error 222 utilss: ', error)
+    return false
+  }
+}
+
+export async function firebaseAddBookDetails(data, id) {
+  try {
+    const res = await setDoc(doc(firestore, 'books', `${id}`), data)
     return true
   } catch (error) {
     console.log('error 222 utilss: ', error)
