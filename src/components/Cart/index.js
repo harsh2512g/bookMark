@@ -21,14 +21,14 @@ const Cart = () => {
   }, [])
   console.log({ cartData, uid })
   return (
-    <div className=" p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[-9%] xl:mt-[4%] bg-center bg-no-repeat w-full mx-auto">
+    <div className="min-h-[calc(100vh-490px)] p-5 md:p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[18%] lg:mt-[9%] xl:mt-[6%] bg-center bg-no-repeat w-full mx-auto">
       <div className=" text-zinc-900 text-3xl font-bold">Your Cart</div>
 
-      <div className="mt-11 flex">
+      <div className="mt-11 md:flex">
         <div className="flex-3">
           <CartDashboard cartData={cartData} loading={loading} />
         </div>
-        <div className="flex-2 mr-11">
+        <div className="flex-2 mr-11 ">
           <CartModal cartData={cartData} loading={loading} />
         </div>
       </div>

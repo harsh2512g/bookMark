@@ -49,18 +49,18 @@ export function About() {
   return (
     <div className="max-w-7xl mx-auto relative">
       <div
-        className="text-green-400  bg-green-200 absolute top-[50%]  hover:bg-green-400  cursor-pointer"
+        className="hidden md:block text-green-400  bg-green-200 absolute top-[50%]  hover:bg-green-400  cursor-pointer"
         onClick={() => scrollTo(-SCROLLER_VALUE)}
       >
         <ChevronLeft size={32} />
       </div>
       <div
-        className="text-green-400  w-50 h-50 bg-green-200 absolute top-[50%] right-0 hover:bg-green-400 cursor-pointer z-50"
+        className="hidden md:block text-green-400  w-50 h-50 bg-green-200 absolute top-[50%] right-0 hover:bg-green-400 cursor-pointer z-50"
         onClick={() => scrollTo(+SCROLLER_VALUE)}
       >
         <ChevronRight size={32} />
       </div>
-      <div className=" bg-[#128848] py-24 sm:py-32 flex flex-col md:flex-row items-center">
+      <div className=" bg-green-700 py-24 sm:py-32 flex flex-col md:flex-row items-center">
         <div className="px-6 lg:px-10">
           <div className="">
             <div className="mx-auto w-full max-w-xl lg:mx-0">
@@ -76,14 +76,14 @@ export function About() {
           </div>
         </div>
 
-        {/* <div
-          className="swiperContainer flex flex-row gap-8 item-center overflow-x-scroll scroll-smooth ease-in-out"
+        <div
+          className="hidden swiperContainer md:flex flex-row gap-8 item-center overflow-x-scroll scroll-smooth ease-in-out"
           ref={swiperRef}
         >
           {data.map((ele, index) => (
             <SliderCard index={index} data={data} ele={ele} />
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   )

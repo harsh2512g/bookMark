@@ -34,7 +34,7 @@ const CartDashboard = ({ cartData, loading }) => {
                 <div className=" text-zinc-800 text-lg font-bold font-['DM Sans'] leading-[27px]">
                   {d?.bookData?.title}
                 </div>
-                <div className="justify-start items-start gap-5 inline-flex">
+                <div className="justify-start items-start gap-5 md:inline-flex">
                   <div className="text-zinc-800 text-sm font-normal font-['DM Sans']">
                     {d?.bookData?.author} |
                   </div>

@@ -140,3 +140,35 @@
   justify-content: center;
   align-items: center;
 }
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  /* Adjust as needed */
+  animation: typing 6.5s steps(100, end), blink-caret 0.2s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.text-shadow {
+  @apply text-white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-md {
+  @apply text-white;
+  text-shadow: 4px 4px 20px rgb(56, 142, 60), -4px 4px 25px rgb(56, 142, 60);
+}
+.rfm-marquee-container1 {
+  overflow-x: visible !important;
+}

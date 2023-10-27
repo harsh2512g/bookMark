@@ -23,13 +23,19 @@ export function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+          <Link href="#" className="-m-1.5 p-1.5 flex">
             <Image
-              src="./logo.svg"
+              src="./logoImage.svg"
               height={90}
-              width={200}
+              width={48}
               className="mx-auto"
+              alt="Your Company"
+            />
+            <Image
+              src="./bookMark.svg"
+              height={90}
+              width={140}
+              className="ml-3 mx-auto"
               alt="Your Company"
             />
           </Link>

@@ -3,7 +3,7 @@ import Button from '../Common/Button'
 
 const CartModal = () => {
   return (
-    <div className="shadow-lg w-[400px] mt-11">
+    <div className="shadow-lg w-[350px] md:w-[400px] mt-11 ">
       <p className="font-bold text-xl text-center border-b-2 border-stone-300 pb-6 px-2">
         1 item in cart
       </p>
