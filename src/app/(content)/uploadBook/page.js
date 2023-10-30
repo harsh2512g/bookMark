@@ -1,8 +1,9 @@
-import UploadPhoto from '@/components/UploadPhoto'
+
+import UploadBook from '@/components/UploadBook'
 import React from 'react'
 
 const UploadPage = () => {
-  return <UploadPhoto />
+  return <UploadBook />
 }
 
 export default UploadPage

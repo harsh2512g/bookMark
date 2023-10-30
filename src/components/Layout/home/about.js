@@ -2,6 +2,7 @@
 import {  useRef } from 'react'
 import SliderCard from './sliderCards'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useDraggable } from '@/utils/common'
 
 const data = [
   {
@@ -36,6 +37,15 @@ const cardsToShow = {
 const SCROLLER_VALUE = 350
 
 export function About() {
+  const {
+    elementRef,
+    mouseDownHandler,
+    mouseLeaveHandler,
+    mouseUpHandler,
+    mouseMoveHandler,
+    active,
+  } = useDraggable()
+
   const swiperRef = useRef(null)
   console.log({ swiperRef })
 
@@ -43,6 +53,14 @@ export function About() {
     const container = swiperRef.current
     container.scrollLeft += amount
   }
+  const setBothRefs = (el) => {
+    if (elementRef) {
+      elementRef.current = el;
+    }
+    if (swiperRef) {
+      swiperRef.current = el;
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto relative">
@@ -75,8 +93,13 @@ export function About() {
         </div>
 
         <div
-          className="hidden swiperContainer md:flex flex-row gap-8 item-center overflow-x-scroll scroll-smooth ease-in-out"
-          ref={swiperRef}
+          className={`hidden swiperContainer md:flex flex-row gap-8 item-center overflow-x-scroll scroll-smooth ease-in-out  ${active?"cursor-grabbing":"cursor-pointer"}`}
+          // ref={swiperRef}
+          ref={setBothRefs}
+          onMouseDown={mouseDownHandler}
+          onMouseLeave={mouseLeaveHandler}
+          onMouseUp={mouseUpHandler}
+          onMouseMove={mouseMoveHandler}
         >
           {data.map((ele, index) => (
             <SliderCard index={index} data={data} ele={ele} />

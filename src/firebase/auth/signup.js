@@ -135,6 +135,7 @@ export async function firebaseLoginWithGoogle() {
           emailVerified: user?.emailVerified,
           providerUserInfo: user?.providerData,
           photoURL: user?.photoURL,
+          cart:[]
         }
         console.log({ updatedUserData })
         await firebaseAddDoc(updatedUserData)

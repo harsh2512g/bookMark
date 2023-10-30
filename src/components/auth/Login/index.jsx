@@ -31,10 +31,7 @@ export default function LoginComponent() {
   const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch()
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
-  }
+
   const handleEmailSignIn = async (e) => {
     try {
       e.preventDefault()

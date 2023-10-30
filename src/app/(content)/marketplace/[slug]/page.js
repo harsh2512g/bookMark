@@ -9,7 +9,7 @@ const DummyPage = ({ param }) => {
   console.log({ param, router, pathname })
 
   console.log(router?.query?.slug, 'router ')
-  return <BookInfo />
+  return <BookInfo pathname={pathname}/>
 }
 
 export default DummyPage

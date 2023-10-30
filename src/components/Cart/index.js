@@ -3,18 +3,29 @@ import React, { useEffect, useState } from 'react'
 import CartDashboard from './cart'
 import CartModal from './cartModal'
 import Cookies from 'js-cookie'
-import { firebaseGetDocs } from '@/firebase/utils'
+import { firebaseGetDoc, firebaseGetDocs } from '@/firebase/utils'
 
 const Cart = () => {
   const uid = Cookies.get('bookMarkUid')
   const [cartData, setCartData] = useState()
   const [loading, setLoading] = useState(false)
+  const [onRemoveClick, setOnRemoveClick] = useState(false)
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true)
+  //     const data = await firebaseGetDocs('cartItems', 'cart_id', uid)
+  //     console.log({ data }, 'cartData')
+  //     setCartData(data)
+  //     setLoading(false)
+  //   }
+
+  //   fetchData()
+  // }, [])
+
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
-      const data = await firebaseGetDocs('cartItems', 'cart_id', uid)
-      setCartData(data)
-      setLoading(false)
+      const data = await firebaseGetDoc('users', uid)
+      setCartData(data?.cart)
     }
 
     fetchData()
@@ -26,7 +37,13 @@ const Cart = () => {
 
       <div className="mt-11 md:flex">
         <div className="flex-3">
-          <CartDashboard cartData={cartData} loading={loading} />
+          {cartData?.map((d) => (
+            <CartDashboard
+              bookId={d}
+              loading={loading}
+              setOnRemoveClick={setOnRemoveClick}
+            />
+          ))}
         </div>
         <div className="flex-2 mr-11 ">
           <CartModal cartData={cartData} loading={loading} />

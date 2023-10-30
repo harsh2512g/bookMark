@@ -1,23 +1,24 @@
 import Image from 'next/image'
 import React from 'react'
-const collection = [
-  {
-    imageUrl: '/bookImg.png',
-    title: 'Algorithms to Live By',
-    author: 'Brian Christian',
-    description: '100+ listings from $10 and up',
-  },
-  {
-    imageUrl: '/bookImg.png',
-    title: 'Algorithms to Live By',
-    author: 'Brian Christian',
-    description: '100+ listings from $10 and up',
-  },
-]
-const BooksContent = () => {
+// const collection = [
+//   {
+//     imageUrl: '/bookImg.png',
+//     title: 'Algorithms to Live By',
+//     author: 'Brian Christian',
+//     description: '100+ listings from $10 and up',
+//   },
+//   {
+//     imageUrl: '/bookImg.png',
+//     title: 'Algorithms to Live By',
+//     author: 'Brian Christian',
+//     description: '100+ listings from $10 and up',
+//   },
+// ]
+const BooksContent = ({ collection }) => {
+  console.log({ collection })
   return (
     <div className="mt-11">
-      {collection.map((d) => (
+      {collection?.map((d) => (
         <>
           <div className="mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex">
             <Image

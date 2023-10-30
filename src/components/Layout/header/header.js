@@ -1,12 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import Link from 'next/link'
 import { X, AlignJustify } from 'lucide-react'
 import Image from 'next/image'
 import ProfileDropdown from './profileDropdown'
 import { useSelector } from 'react-redux'
+import { firebaseGetAllDoc, firebaseGetDoc } from '@/firebase/utils'
+import { useDispatch } from 'react-redux'
+import { setBooks } from '@/redux/authSlice'
 
 const navigation = [
   { name: 'How it Works', href: '/about' },
@@ -18,6 +21,16 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const uid = useSelector((state) => state?.user?.uid)
   console.log({ uid })
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const data = await firebaseGetAllDoc('books')
+      console.log({ data }, 'books data')
+      dispatch(setBooks(data))
+    }
+    fetchBooks()
+  }, [])
   return (
     <header className="bg-white fixed top-0 right-0 left-0 z-[100] bg-transparent'}">
       <nav

@@ -61,42 +61,38 @@ const VerticalMarquees = () => {
         style={{ flexBasis: '30%' }}
       >
         {/* First marquee (down to top) */}
-        <Marquee
-          direction="down"
-          speed={50}
-          className="rfm-marquee-container1"
-          // play={false}
-        >
-          <div className="space-y-4">
-            {leftMarquee1.map((d) => (
-              <div className="rounded-lg ">
-                <Image
-                  src={d?.imageUrl}
-                  height={70}
-                  width={200}
-                  className=""
-                  alt=""
-                />
-              </div>
-            ))}
-          </div>
+        <Marquee direction="down" speed={50} className="mr-10 " loop={0}>
+          {leftMarquee1.map((d) => (
+            <div className="rounded-lg m-10">
+              <Image
+                src={d?.imageUrl}
+                height={70}
+                width={100}
+                className=""
+                alt=""
+              />
+            </div>
+          ))}
         </Marquee>
 
         {/* Second marquee (down to top) */}
-        <Marquee direction="up" speed={50} className="rfm-marquee-container1">
-          <div className="space-y-4 ml-11">
-            {leftMarquee2.map((d) => (
-              <div className="">
-                <Image
-                  src={d?.imageUrl}
-                  height={70}
-                  width={200}
-                  className=""
-                  alt=""
-                />
-              </div>
-            ))}
-          </div>
+        <Marquee
+          direction="up"
+          speed={50}
+          className=" "
+          loop={0}
+        >
+          {leftMarquee2.map((d) => (
+            <div className="m-10">
+              <Image
+                src={d?.imageUrl}
+                height={70}
+                width={100}
+                className=""
+                alt=""
+              />
+            </div>
+          ))}
         </Marquee>
       </div>
       <div
@@ -125,9 +121,13 @@ const VerticalMarquees = () => {
         style={{ flexBasis: '30%' }}
       >
         {/* Third marquee (top to down) */}
-        <Marquee direction="up" speed={50} className="rfm-marquee-container1">
-          <div className="space-y-4 mr-8">
-            {rightMarquee1.map((d) => (
+        <Marquee
+          direction="up"
+          speed={50}
+          // className="rfm-marquee-container1"
+        >
+          {rightMarquee1.map((d) => (
+            <div className="m-10">
               <Image
                 src={d?.imageUrl}
                 height={70}
@@ -135,14 +135,14 @@ const VerticalMarquees = () => {
                 className="rounded-xl"
                 alt=""
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </Marquee>
 
         {/* Fourth marquee (top to down) */}
         <Marquee direction="down" speed={50} className="rfm-marquee-container1">
-          <div className="space-y-4 ">
-            {rightMarquee2.map((d) => (
+          {rightMarquee2.map((d) => (
+            <div className="m-10">
               <Image
                 src={d?.imageUrl}
                 height={70}
@@ -150,8 +150,8 @@ const VerticalMarquees = () => {
                 className=""
                 alt=""
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </Marquee>
       </div>
     </div>

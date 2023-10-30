@@ -6,16 +6,21 @@ import LoginSignUpModal from '../loginSignUpModal'
 import { firebaseGetDoc } from '@/firebase/auth/signup'
 import { v4 as uuidv4 } from 'uuid'
 import Cookies from 'js-cookie'
-import { firebaseAddBookInCart } from '@/firebase/utils'
+import {
+  firebaseAddBookInCart,
+  firebaseGetDocs,
+  firebaseUpdateDoc,
+} from '@/firebase/utils'
 import { toast } from 'react-toastify'
-import { Spinner } from '@phosphor-icons/react/dist/ssr'
-import { useRouter } from 'next/navigation'
 
-const BookInfo = () => {
+import { useRouter } from 'next/navigation'
+import SpinnerComponent from '../Common/Spinner'
+
+const BookInfo = ({ pathname }) => {
   const [addTocart, setAddToCart] = useState(false)
   const [makeOffer, setMakeOffer] = useState(false)
   const [onCheckout, setOnCheckout] = useState(false)
-  const [bookId, setBookId] = useState()
+
   const [bookData, setBookData] = useState()
   const [sellerData, setSellerData] = useState()
   const [loading, setLoading] = useState(false)
@@ -26,21 +31,8 @@ const BookInfo = () => {
   console.log({ url }, 'aa')
   // Ensure there are at least 3 segments and "marketplace" is the second to last segment.
 
-  useEffect(() => {
-    const pathSegments = url.pathname.split('/')
-
-    if (
-      pathSegments.length >= 3 &&
-      pathSegments[pathSegments.length - 2] === 'marketplace'
-    ) {
-      const id = pathSegments[pathSegments.length - 1]
-      setBookId(id)
-      console.log(id, 'checking') // This should output: 12345
-    } else {
-      console.log('ID not found or URL structure is different')
-    }
-  }, [url])
-
+  const pathSegments = pathname.split('/')
+  const bookId = pathSegments[2]
   useEffect(() => {
     const fetchBook = async () => {
       let data = await firebaseGetDoc('books', bookId)
@@ -50,22 +42,23 @@ const BookInfo = () => {
     fetchBook()
   }, [bookId])
 
-  const addToCart = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebaseGetDoc('users', uid)
+      const upd = data?.cart.find((d) => d == bookId)
+      console.log({ upd })
+      if (upd) {
+        setAddToCart(true)
+      }
+    }
+
+    fetchData()
+  }, [bookId])
+
+  const addToCartFunc = async () => {
     setLoading(true)
 
-    const submitInfo = {
-      id: uuidv4(),
-      cart_id: uid,
-      book_id: bookData?.id,
-      quantity: 1,
-      unit_price: bookData?.price,
-      total_price: parseInt(bookData?.price) * 1,
-      created_at: new Date(),
-      update_at: new Date(),
-      bookData: bookData,
-    }
-    console.log({ submitInfo })
-    const data = await firebaseAddBookInCart(submitInfo, submitInfo?.id)
+    const data = await firebaseUpdateDoc('users', uid, bookId)
     if (!data) {
       console.log('Error in adding in cart')
     } else {
@@ -79,6 +72,33 @@ const BookInfo = () => {
       })
       setAddToCart(true)
     }
+    // {
+    //   const submitInfo = {
+    //     id: uuidv4(),
+    //     book_id: bookData?.id,
+    //     quantity: 1,
+    //     unit_price: bookData?.price,
+    //     total_price: parseInt(bookData?.price) * 1,
+    //     created_at: new Date(),
+    //     update_at: new Date(),
+    //     bookData: bookData,
+    //   }
+    //   console.log({ submitInfo })
+    //   const data = await firebaseAddBookInCart(submitInfo, submitInfo?.id)
+    //   if (!data) {
+    //     console.log('Error in adding in cart')
+    //   } else {
+    //     toast.success('Added to cart', {
+    //       position: 'bottom-left',
+    //       autoClose: 10000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //     })
+    //     setAddToCart(true)
+    //   }
+    // }
     setLoading(false)
   }
 
@@ -93,7 +113,7 @@ const BookInfo = () => {
   console.log({ sellerData })
   return (
     <>
-      {loading && <Spinner />}
+      {loading && <SpinnerComponent />}
       <div className=" p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[-9%] xl:mt-[4%] w-full mx-auto">
         <div>
           <div className="mt-24 lg:mt-0 text-zinc-900 text-3xl font-bold mb-4">
@@ -176,11 +196,13 @@ const BookInfo = () => {
                     {' '}
                     <div
                       onClick={() => {
-                        addToCart()
+                        !addTocart && addToCartFunc()
                       }}
                       className={`${
-                        addTocart ? 'bg-green-200' : 'bg-green-700'
-                      } cursor-pointer w-[350px] h-[47px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
+                        addTocart
+                          ? 'bg-green-200'
+                          : 'bg-green-700 cursor-pointer'
+                      }  w-[350px] h-[47px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
                     >
                       <div
                         className={`${

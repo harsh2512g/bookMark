@@ -44,8 +44,9 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
       })
 
       console.log({ user })
-      let updatedUserData = { ...user, allowPushNotifications: true }
+      let updatedUserData = { ...user, allowPushNotifications: true, cart: [] }
       delete updatedUserData.accessToken
+      
       await firebaseAddDoc(updatedUserData)
       let prepareParams = {
         uid: user?.uid,
