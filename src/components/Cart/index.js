@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CartDashboard from './cart'
 import CartModal from './cartModal'
 import Cookies from 'js-cookie'
-import { firebaseGetDoc, firebaseGetDocs } from '@/firebase/utils'
+import { firebaseGetDocs } from '@/firebase/utils'
 
 const Cart = () => {
   const uid = Cookies.get('bookMarkUid')

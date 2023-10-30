@@ -1,20 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import SpinnerComponent from '../Common/Spinner'
-const books = [
-  {
-    imageUrl: './bookImage.svg',
-    title: 'Algorithms to Live By',
-    author: 'Brian Christian',
-    description: '100+ listings from $10 and up',
-  },
-  {
-    imageUrl: './bookImage.svg',
-    title: 'Algorithms to Live By',
-    author: 'Brian Christian',
-    description: '100+ listings from $10 and up',
-  },
-]
+
 const CartDashboard = ({ cartData, loading }) => {
   return (
     <div className="mt-11">

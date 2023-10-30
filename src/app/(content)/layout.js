@@ -12,7 +12,6 @@ export default function ContentRootLayout({ children }) {
     <>
       <Header />
       {children}
-
       <Footer />
     </>
   )

@@ -15,16 +15,24 @@ import Cookies from 'js-cookie'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '@/firebase/app'
 import { useUidContext } from '@/contexts/uidContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { store } from '@/redux/store'
+import { setUid } from '@/redux/authSlice'
+
 const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const [userDetails, setUserDetails] = useState({
     email: '',
     userName: '',
     password: '',
   })
+
+  const uid = useSelector((state) => state?.uid)
+  console.log({ uid }, 'harsh')
   const user = useAuthState(auth)
   const [verifyId, setVerifyID] = useState(null)
-  const { uid, setUid } = useUidContext()
+  // const { uid, setUid } = useUidContext()
   const handleSignUp = async () => {
     console.log({ userDetails })
     try {
@@ -47,6 +55,8 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
       console.log('after firebase add doc')
 
       if (user && !user?.error) {
+        dispatch(setUid(user?.uid))
+
         Cookies.set('bookMarkUid', user?.uid)
         router.push('/')
 
@@ -75,10 +85,8 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
   }
 
   const handleGoogleSignUp = async () => {
-    const { user } = await firebaseLoginWithGoogle({
-      setVerifyID,
-    })
-
+    const { user } = await firebaseLoginWithGoogle()
+    dispatch(setUid(user?.uid))
     if (user) {
       Cookies.set('bookMarkUid', user?.uid)
       setUid(user?.uid)
@@ -106,7 +114,7 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
   }
   return (
     <>
-      <div className="  p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[-9%] xl:mt-[4%] bg-center bg-no-repeat w-full mx-auto">
+      <div className="min-h-screen  flex flex-col items-center justify-center mx-auto">
         <div className="text-center mb-8 font-bold text-green-800 text-3xl">
           Sign Up
         </div>

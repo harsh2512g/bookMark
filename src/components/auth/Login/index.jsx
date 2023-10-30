@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { Input } from '@/components/UI/input'
-import { Button } from '@/components/UI/button'
+
 import { Label } from '@/components/UI/label'
 import { useFirebaseAuthContext } from '@/contexts/firebaseAuthContext'
 import { signInWithGoogle, signInWithEmail } from '@/firebase/auth'
@@ -9,39 +9,28 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Checkbox } from '@/components/UI/checkbox'
-import { useToast } from '@/components/UI/use-toast'
-import SpinnerComponent from '@/components/Common/Spinner'
 
-const loginFields = [
-  {
-    label: 'Email',
-    name: 'email',
-    type: 'email',
-    placeholder: 'Email',
-    id: 'email',
-  },
-  {
-    label: 'Password',
-    name: 'password',
-    type: 'password',
-    placeholder: 'Password',
-    autoComplete: 'current-password',
-    minLength: '6',
-    id: 'password',
-  },
-]
+import SpinnerComponent from '@/components/Common/Spinner'
+import GoogleSignIn from '@/components/Common/GoogleSignIn'
+import Button from '@/components/Common/Button'
+import { firebaseLoginWithGoogle } from '@/firebase/auth/signup'
+import { setUid } from '@/redux/authSlice'
+import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
 
 export default function LoginComponent() {
   const { authUser, updateUserData } = useFirebaseAuthContext()
-  const [formData, setFormData] = useState({
+  const router = useRouter()
+  const [userDetails, setUserDetails] = useState({
     email: '',
     password: '',
   })
   const { push } = useRouter()
   const [isChecked, setIsChecked] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
 
+  const dispatch = useDispatch()
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prevData) => ({ ...prevData, [name]: value }))
@@ -50,7 +39,7 @@ export default function LoginComponent() {
     try {
       e.preventDefault()
       setIsLoading(true)
-      await signInWithEmail(formData, isChecked)
+      await signInWithEmail(userDetails, isChecked)
       push('/')
       setIsLoading(false)
     } catch (error) {
@@ -87,82 +76,84 @@ export default function LoginComponent() {
 
   const handleGoogleSignIn = async (e) => {
     e.preventDefault()
-    let res = await signInWithGoogle(authUser, updateUserData)
-    if (res.status === 'success') {
-      push('/dashboard')
+    const { user } = await firebaseLoginWithGoogle()
+    dispatch(setUid(user?.uid))
+    if (user) {
+      Cookies.set('bookMarkUid', user?.uid)
+      setUid(user?.uid)
+      router.push('/')
+
+      toast.success('User Logged in Successfully', {
+        position: 'bottom-left',
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
+    } else {
+      toast.error(errorMessage, {
+        position: 'bottom-left',
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
     }
+    console.log({ user })
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <div className="mx-auto w-full max-w-sm lg:w-96 mb-6">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <Image
-              src="./mark.svg"
-              height={60}
-              width={72}
-              className="mx-auto"
-              alt="Your Company"
-            />
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign in to your account
-            </h2>
-          </div>
+    <>
+      <div className="min-h-screen  flex flex-col items-center justify-center mx-auto">
+        <div className="text-center mb-8 font-bold text-green-800 text-3xl">
+          Login
         </div>
-        <form onSubmit={handleEmailSignIn}>
-          {loginFields.map((field) => (
-            <div className="mb-4" key={field.name}>
-              <Label htmlFor={field.name}>{field.label}</Label>
-              <Input
-                type={field.type}
-                name={field.name}
-                id={field.name}
-                placeholder={field.placeholder}
-                value={formData[field.name]}
-                onChange={handleChange}
+        {
+          <div className="mx-auto text-center flex flex-col justify-center">
+            {' '}
+            <div>
+              <input
+                id="orgName"
+                name="orgName"
+                type="orgName"
+                autoComplete="orgName"
+                placeholder="User Email"
                 required
+                className="mt-4 w-[358px] py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
+                onChange={(e) =>
+                  setUserDetails((prev) => ({ ...prev, email: e.target.value }))
+                }
               />
             </div>
-          ))}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <Checkbox
-                id="remember-me"
-                name="remember-me"
-                checked={isChecked}
-                onChange={(e) => setIsChecked(e.target.checked)}
-                type="checkbox"
+            <div>
+              <input
+                id="orgName"
+                name="orgName"
+                type="orgName"
+                autoComplete="orgName"
+                placeholder="User Password"
+                required
+                className=" mt-4 w-[358px] py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
+                onChange={(e) =>
+                  setUserDetails((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }))
+                }
               />
-              <Label
-                htmlFor="remember-me"
-                className="ml-3 block text-sm font-medium leading-6 text-gray-700"
-              >
-                Remember me
-              </Label>
             </div>
-
-            <div className="text-sm leading-6 ">
-              <Link
-                href="/forgot-password"
-                rel="canonical"
-                className="text-gray font-semibold text-gray-600 hover:text-gray-500"
-              >
-                Forgot password?
-              </Link>
+            <div>
+              <Button onClick={handleEmailSignIn} text={'Login'} />
             </div>
+            <GoogleSignIn
+              text={'Sign in with Google'}
+              onClick={handleGoogleSignIn}
+            />
           </div>
-          <Button type="submit" className="w-full mb-3">
-            {isLoading && (
-              <SpinnerComponent className="text-white absolute left-4" />
-            )}
-            Login
-          </Button>
-          <Button type="button" onClick={handleGoogleSignIn} className="w-full">
-            Sign in with Google
-          </Button>
-        </form>
+        }
       </div>
-    </div>
+    </>
   )
 }

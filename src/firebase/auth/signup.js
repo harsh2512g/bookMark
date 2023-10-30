@@ -106,7 +106,7 @@ export async function firebaseAddBookDetails(data, id) {
   }
 }
 
-export async function firebaseLoginWithGoogle({ setVerifyID }) {
+export async function firebaseLoginWithGoogle() {
   const auth = getAuth()
   const firebaseGoogleProvider = new GoogleAuthProvider()
   firebaseGoogleProvider.addScope('email')

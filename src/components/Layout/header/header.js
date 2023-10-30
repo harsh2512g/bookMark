@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { X, AlignJustify } from 'lucide-react'
 import Image from 'next/image'
 import ProfileDropdown from './profileDropdown'
+import { useSelector } from 'react-redux'
 
 const navigation = [
   { name: 'How it Works', href: '/about' },
@@ -15,7 +16,8 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
+  const uid = useSelector((state) => state?.user?.uid)
+  console.log({ uid })
   return (
     <header className="bg-white fixed top-0 right-0 left-0 z-[100] bg-transparent'}">
       <nav
