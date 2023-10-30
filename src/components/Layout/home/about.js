@@ -1,7 +1,5 @@
 'use client'
-import Image from 'next/image'
-import { useState, useRef } from 'react'
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+import {  useRef } from 'react'
 import SliderCard from './sliderCards'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 

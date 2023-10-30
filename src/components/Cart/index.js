@@ -18,7 +18,7 @@ const Cart = () => {
     }
 
     fetchData()
-  }, [])
+  }, [uid])
   console.log({ cartData, uid })
   return (
     <div className="min-h-[calc(100vh-490px)] p-5 md:p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[18%] lg:mt-[9%] xl:mt-[6%] bg-center bg-no-repeat w-full mx-auto">
