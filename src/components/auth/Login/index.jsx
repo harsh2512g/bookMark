@@ -1,16 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import { Input } from '@/components/UI/input'
-
-import { Label } from '@/components/UI/label'
-import { useFirebaseAuthContext } from '@/contexts/firebaseAuthContext'
-import { signInWithGoogle, signInWithEmail } from '@/firebase/auth'
+import { signInWithEmail } from '@/firebase/auth'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Checkbox } from '@/components/UI/checkbox'
-
-import SpinnerComponent from '@/components/Common/Spinner'
 import GoogleSignIn from '@/components/Common/GoogleSignIn'
 import Button from '@/components/Common/Button'
 import { firebaseLoginWithGoogle } from '@/firebase/auth/signup'
@@ -20,7 +11,6 @@ import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 
 export default function LoginComponent() {
-  const { authUser, updateUserData } = useFirebaseAuthContext()
   const router = useRouter()
   const [userDetails, setUserDetails] = useState({
     email: '',
@@ -81,15 +71,6 @@ export default function LoginComponent() {
       router.push('/')
 
       toast.success('User Logged in Successfully', {
-        position: 'bottom-left',
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      })
-    } else {
-      toast.error(errorMessage, {
         position: 'bottom-left',
         autoClose: 10000,
         hideProgressBar: false,

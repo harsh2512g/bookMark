@@ -76,7 +76,7 @@ const BookCollection = ({ selectedCategory }) => {
             </Link>
             <div
               className="w-[25px] lg:w-[30px] cursor-pointer"
-              onClick={() => addToCart(d)}
+              // onClick={() => addToCart(d)}
             >
               <Image
                 src="/addToCart.png"
