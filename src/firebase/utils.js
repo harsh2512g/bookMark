@@ -22,19 +22,6 @@ import {
   arrayUnion,
   arrayRemove,
 } from 'firebase/firestore'
-console.log({ firestore })
-const firebaseAddDoc = async (data) => {
-  try {
-    const res = await setDoc(
-      doc(firestore, 'users', `${auth.currentUser.uid}`),
-      data,
-    )
-    return true
-  } catch (error) {
-    console.log('error 222 utilss: ', error)
-    return false
-  }
-}
 
 export async function firebaseAddBookInCart(data, id) {
   try {
@@ -58,6 +45,19 @@ export async function firebaseGetDoc(collectionName, id) {
     }
   } catch (error) {
     console.log('error', error)
+  }
+}
+
+export async function firebaseAddDoc(data) {
+  try {
+    const res = await setDoc(
+      doc(firestore, 'users', `${auth.currentUser.uid}`),
+      data,
+    )
+    return true
+  } catch (error) {
+    console.log('error 222 utilss: ', error)
+    return false
   }
 }
 
@@ -142,16 +142,17 @@ export async function firebaseGetAllDoc(collectionName) {
   return arr
 }
 
-export async function uploadImages(files ) {
+export async function uploadImages(files) {
   console.log({ files })
 
   const uploadPromises = files.map((file) => {
     const storage = getStorage(firebase)
     const storageRef = ref(storage, 'books/' + file?.file?.name)
-    return uploadBytes(storageRef, file?.file)
-    .then(snapshot => getDownloadURL(snapshot.ref));
+    return uploadBytes(storageRef, file?.file).then((snapshot) =>
+      getDownloadURL(snapshot.ref),
+    )
   })
-  const imageUrls = await Promise.all(uploadPromises);
-  console.log({imageUrls})
-  return imageUrls;
+  const imageUrls = await Promise.all(uploadPromises)
+  console.log({ imageUrls })
+  return imageUrls
 }

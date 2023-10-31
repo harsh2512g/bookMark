@@ -95,7 +95,7 @@ export default function LoginComponent() {
               <input
                 id="orgName"
                 name="orgName"
-                type="orgName"
+                type="email"
                 autoComplete="orgName"
                 placeholder="User Email"
                 required
@@ -109,7 +109,7 @@ export default function LoginComponent() {
               <input
                 id="orgName"
                 name="orgName"
-                type="orgName"
+                type="password"
                 autoComplete="orgName"
                 placeholder="User Password"
                 required

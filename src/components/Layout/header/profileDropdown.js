@@ -16,6 +16,7 @@ export default function ProfileDropdown() {
   const signOut = () => {
     Cookies.remove('bookMarkUid')
     firebaseLogout()
+    window.location.reload()
     router.push('/')
   }
   const uid = useSelector((state) => state?.uid)
@@ -64,7 +65,7 @@ export default function ProfileDropdown() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="#"
+                    href="/login"
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm',
