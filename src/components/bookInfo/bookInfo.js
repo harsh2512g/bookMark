@@ -27,8 +27,7 @@ const BookInfo = ({ pathname }) => {
   const uid = Cookies.get('bookMarkUid')
   const router = useRouter()
 
-  const url = new URL(window.location.href)
-  console.log({ url }, 'aa')
+ 
   // Ensure there are at least 3 segments and "marketplace" is the second to last segment.
 
   const pathSegments = pathname.split('/')
