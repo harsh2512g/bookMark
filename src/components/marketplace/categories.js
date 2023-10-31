@@ -24,27 +24,6 @@ const categoriesArray = [
     name: 'Language Studies',
   },
   {
-    name: 'Education',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
     name: 'Business',
   },
   {
@@ -54,30 +33,12 @@ const categoriesArray = [
     name: 'Education',
   },
   {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
-  },
-  {
-    name: 'Business',
+    name: 'Physics',
   },
 ]
 const SCROLLER_VALUE = 100
 const Categories = () => {
-  const [selectedCategory, setSelectedCategory] = useState('chemistry')
+  const [selectedCategory, setSelectedCategory] = useState('Chemistry')
   console.log({ selectedCategory })
   const swiperRef = useRef(null)
   console.log({ swiperRef })

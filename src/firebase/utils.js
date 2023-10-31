@@ -1,5 +1,7 @@
-import { auth } from './app'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { auth, firebase } from './app'
 import { firestore } from './firestore'
+
 import {
   addDoc,
   collection,
@@ -138,4 +140,18 @@ export async function firebaseGetAllDoc(collectionName) {
     arr.push(data.data())
   })
   return arr
+}
+
+export async function uploadImages(files ) {
+  console.log({ files })
+
+  const uploadPromises = files.map((file) => {
+    const storage = getStorage(firebase)
+    const storageRef = ref(storage, 'books/' + file?.file?.name)
+    return uploadBytes(storageRef, file?.file)
+    .then(snapshot => getDownloadURL(snapshot.ref));
+  })
+  const imageUrls = await Promise.all(uploadPromises);
+  console.log({imageUrls})
+  return imageUrls;
 }

@@ -10,6 +10,9 @@ import CustomDropdown from '../Common/DropDown'
 import BookDetails from './bookDetails'
 import Price from './price'
 import SellerDetails from './sellerDetails'
+import ListingSuccessfully from './listingSuccessfully'
+import { useSelector } from 'react-redux'
+import { uploadImages } from '@/firebase/utils'
 
 const bookConditionDropDownOptions = [
   'Brand New',
@@ -21,26 +24,42 @@ const bookConditionDropDownOptions = [
 ]
 
 export default function UploadBook() {
-  const [selectedFiles, setSelectedFiles] = useState([])
+  const data = useSelector((state) => state?.bookInfo)
+
   const { uid } = useUidContext()
   const [activeIndex, setActiveIndex] = useState(0)
-  const [formDetails, setFormDetails] = useState({
-    id: uuidv4(),
-    title: '',
-    user_id: uid,
-    author: '',
-    isbn: '',
-    price: null,
-    edition: '',
-    notes: '',
-    created_at: new Date(),
-    updated_at: new Date(),
+  const [errors, setErrors] = useState({
+    title: false,
+    user_id: false,
+    author: false,
+    isbn: false,
+    edition: false,
+    notes: false,
+    bookCondition: false,
+    price: false,
+    city: false,
+    state: false,
+    category: false,
   })
-
   const onSave = async () => {
-    console.log({ formDetails })
-    const data = await firebaseAddBookDetails(formDetails, formDetails?.id)
-    console.log({ data })
+    const urls = await uploadImages(data?.uploadedImages)
+    if (data) {
+      const { uploadedImages, ...otherData } = data
+      const updatedData = {
+        ...otherData,
+        urls
+      };
+      const data1 = await firebaseAddBookDetails(updatedData, data?.id)
+
+      if (data1) {
+        setActiveIndex(4)
+      }
+    }
+  }
+
+  if (data) {
+    const { uploadedImages, ...otherData } = data
+    console.log({ otherData }, 'harsh')
   }
 
   return (
@@ -49,15 +68,24 @@ export default function UploadBook() {
         <BookDetails
           setActiveIndex={setActiveIndex}
           activeIndex={activeIndex}
+          errors={errors}
+          setErrors={setErrors}
         />
       )}
       {(activeIndex === 1 || activeIndex === 3) && (
-        <Price setActiveIndex={setActiveIndex} activeIndex={activeIndex} />
+        <Price
+          setActiveIndex={setActiveIndex}
+          activeIndex={activeIndex}
+          errors={errors}
+          setErrors={setErrors}
+        />
       )}
       {(activeIndex === 2 || activeIndex === 3) && (
         <SellerDetails
           setActiveIndex={setActiveIndex}
           activeIndex={activeIndex}
+          errors={errors}
+          setErrors={setErrors}
         />
       )}
       {activeIndex == 3 && (
@@ -79,6 +107,12 @@ export default function UploadBook() {
             </div>
           </div>
         </div>
+      )}
+      {activeIndex === 4 && (
+        <ListingSuccessfully
+          setActiveIndex={setActiveIndex}
+          activeIndex={activeIndex}
+        />
       )}
     </div>
   )

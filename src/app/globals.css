@@ -171,4 +171,5 @@
 }
 .rfm-marquee-container1 {
   overflow-x: visible !important;
+  display:block !important
 }

@@ -2,21 +2,24 @@ import { setBookInfo } from '@/redux/authSlice'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const Price = ({ setActiveIndex,activeIndex }) => {
+const Price = ({ setActiveIndex, activeIndex,errors,setErrors }) => {
   const dispatch = useDispatch()
   const data = useSelector((state) => state?.bookInfo)
 
   const [price, setPrice] = useState(data?.price)
 
   const onNext = () => {
-    
-    dispatch(setBookInfo({...data,price}))
-
-    setActiveIndex(2)
+    if (!price) {
+      setErrors({...errors,price:true})
+      return;
+    } else {
+      dispatch(setBookInfo({ ...data, price }))
+      setActiveIndex(2)
+    }
   }
 
   return (
-    <div >
+    <div>
       <div className="  grow shrink basis-0 justify-start  gap-10 flex flex-col md:flex-row">
         <div className="w-full">
           <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
@@ -35,7 +38,7 @@ const Price = ({ setActiveIndex,activeIndex }) => {
             placeholder="Price"
             required
             className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={(e) => {setPrice(e.target.value); setErrors({...errors,price:false})}}
             defaultValue={data?.price}
           />
           <p className="text-zinc-800 text-sm font-normal py-4 ">
@@ -43,27 +46,31 @@ const Price = ({ setActiveIndex,activeIndex }) => {
             make an offer on your listing. If you would like to allow that
             feature, check this box:
           </p>
+          {errors?.price && (
+            <p className="text-sm text-red-600">Please fill this field</p>
+          )}
         </div>
       </div>
-      {activeIndex===1 && 
-      <div className="flex justify-between w-full">
-        <div
-          onClick={() => setActiveIndex(0)}
-          className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
-        >
-          <div className={`text-white text-lg font-bold flex items-center`}>
-            <div>Back</div>
+      {activeIndex === 1 && (
+        <div className="flex justify-between w-full">
+          <div
+            onClick={() => setActiveIndex(0)}
+            className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
+          >
+            <div className={`text-white text-lg font-bold flex items-center`}>
+              <div>Back</div>
+            </div>
+          </div>
+          <div
+            onClick={onNext}
+            className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
+          >
+            <div className={`text-white text-lg font-bold flex items-center`}>
+              <div>Next</div>
+            </div>
           </div>
         </div>
-        <div
-          onClick={onNext}
-          className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
-        >
-          <div className={`text-white text-lg font-bold flex items-center`}>
-            <div>Next</div>
-          </div>
-        </div>
-      </div>}
+      )}
     </div>
   )
 }

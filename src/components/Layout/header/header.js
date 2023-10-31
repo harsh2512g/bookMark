@@ -82,7 +82,7 @@ export function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
-          <Link href="#" className="text-green-700 text-lg font-bold mr-5">
+          <Link href="/uploadBook" className="text-green-700 text-lg font-bold mr-5">
             Sell Textbooks
           </Link>
           <Link

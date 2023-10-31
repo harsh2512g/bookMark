@@ -109,7 +109,7 @@ const BookInfo = ({ pathname }) => {
     }
     fetchSellerData()
   }, [bookData])
-  console.log({ sellerData })
+  console.log({ bookData })
   return (
     <>
       {loading && <SpinnerComponent />}
@@ -123,14 +123,20 @@ const BookInfo = ({ pathname }) => {
           </div>
           <div className="text-neutral-500 text-sm font-mormal ">{`Authors: ${bookData?.author} | 1st Edition | ISBN: ${bookData?.isbn}`}</div>
           <div className="mt-32 flex flex-col lg:flex-row justify-between">
-            <div className="mx-auto">
-              <Image
+            <div className="mx-auto grid grid-cols-2 gap-4 mr-6">
+              {/* <Image
                 src="/bookImg.png"
                 height={10}
                 width={300}
                 className=" shadow-lg mb-3"
                 alt="Your Company"
-              />
+              /> */}
+              {bookData?.urls?.map((image, index) => (
+              <div key={index} className="relative">
+                <img src={image} alt={`Uploaded ${index}`} className="w-64" />
+               
+              </div>
+            ))}
             </div>
             <div className="flex flex-col lg:flex-row mt-10 lg:mt-0 justify-between">
               <div className="w-[390px] border-r-2 pr-8 border-[#C4C4C4]">

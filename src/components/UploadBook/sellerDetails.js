@@ -2,16 +2,31 @@ import { setBookInfo } from '@/redux/authSlice'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const SellerDetails = ({ setActiveIndex, activeIndex }) => {
+const SellerDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
   const dispatch = useDispatch()
   const data = useSelector((state) => state?.bookInfo)
   const [city, setCity] = useState(data?.city)
   const [state, setState] = useState(data.state)
 
-  const onNext = () => {
-    dispatch(setBookInfo({ ...data, city, state }))
+  const checkingErrors = () => {
+    if (!city) {
+      setErrors({ ...errors, city: true })
+      return true
+    }
+    if (!state) {
+      setErrors({ ...errors, state: true })
+      return true
+    }
 
-    setActiveIndex(3)
+    return false
+  }
+
+  const onNext = () => {
+    const error = checkingErrors()
+    if (!error) {
+      dispatch(setBookInfo({ ...data, city, state }))
+      setActiveIndex(3)
+    }
   }
 
   console.log({ data }, 'onSeller')
@@ -32,9 +47,15 @@ const SellerDetails = ({ setActiveIndex, activeIndex }) => {
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => setCity(e?.target.value)}
-              //   defaultValue={data?.isbn}
+              onChange={(e) => {
+                setCity(e.target.value)
+                setErrors({ ...errors, city: false })
+              }}
+                defaultValue={data?.city}
             />
+            {errors?.city && (
+              <p className="text-sm text-red-600">Please fill this field</p>
+            )}
           </div>
           <div className="detail">
             <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
@@ -48,9 +69,15 @@ const SellerDetails = ({ setActiveIndex, activeIndex }) => {
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => setState(e.target.value)}
-              //   defaultValue={data?.edition}
+              onChange={(e) => {
+                setState(e.target.value)
+                setErrors({ ...errors, state: false })
+              }}
+                defaultValue={data?.state}
             />
+            {errors?.state && (
+              <p className="text-sm text-red-600">Please fill this field</p>
+            )}
           </div>
 
           {/* Add other details as needed */}
