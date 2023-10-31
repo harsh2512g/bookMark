@@ -1,24 +1,25 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import Image from 'next/image'
 import Cookies from 'js-cookie'
-import { useUidContext } from '@/contexts/uidContext'
 import { useRouter } from 'next/navigation'
 import { firebaseLogout } from '@/firebase/auth/auth'
+import { useSelector } from 'react-redux'
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function ProfileDropdown() {
   const router = useRouter()
-  const { uid } = useUidContext()
-  console.log({ uid })
+  // const { uid } = useUidContext()
+  // console.log({ uid })
   const signOut = () => {
     Cookies.remove('bookMarkUid')
     firebaseLogout()
     router.push('/')
   }
-
+  const uid = useSelector((state) => state?.uid)
+  console.log({ uid }, 'harsh')
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>

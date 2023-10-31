@@ -1,20 +1,20 @@
+'use client'
 import React from 'react'
 import { FirebaseAuthProvider } from '@/contexts/firebaseAuthContext'
 import 'swiper/swiper-bundle.css' // Make sure to import swiper CSS
 import { UidProvider } from '@/contexts/uidContext'
 
-export const metadata = {
-  title: 'Main root of the Project',
-  description: 'Main root description of the Project',
-}
+import { Providers } from '@/redux/provider'
 
 export default function AppLayout({ children }) {
   return (
     <html lang="en" className={`bg-white`}>
       <body className="flex flex-col">
-        <UidProvider>
-          <FirebaseAuthProvider>{children}</FirebaseAuthProvider>
-        </UidProvider>
+        <Providers>
+          <UidProvider>
+            <FirebaseAuthProvider>{children}</FirebaseAuthProvider>
+          </UidProvider>
+        </Providers>
       </body>
     </html>
   )

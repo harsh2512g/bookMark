@@ -5,7 +5,7 @@ import React from 'react'
 const ThankYou = () => {
   const router = useRouter()
   return (
-    <div className="  max-w-7xl  mt-[5%] w-full mx-auto h-[calc(100vh-590px)]">
+    <div className="  max-w-7xl  mt-[10%] w-full mx-auto h-[calc(100vh-500px)]">
       <div className=" text-zinc-900 text-3xl font-bold mb-10 pl-8">
         Checkout
       </div>

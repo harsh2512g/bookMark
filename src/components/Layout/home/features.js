@@ -1,5 +1,6 @@
 import { MessagesSquare, Heart, PenSquare, Trash2 } from 'lucide-react'
 import Accordion from './accordian'
+import VerticalMarquees from './marquee'
 
 const features = [
   {
@@ -51,23 +52,26 @@ const features = [
 
 export function Features() {
   return (
-    <div className="lg:flex items-center max-w-7xl mx-auto bg-white py-24 sm:py-32">
-      <div>
-        <div className="px-6 lg:px-8">
-          <div className="">
-            <div className="mx-auto w-full max-w-xl lg:mx-0">
-              <h2 className="w-[350px] md:w-[365px] font-sans text-3xl font-bold tracking-tight  text-green-700  ">
-                What your fellow students ask us:
-              </h2>
+    <>
+      <div className="lg:flex items-center max-w-7xl mx-auto bg-white py-24 sm:py-32">
+        <div>
+          <div className="px-6 lg:px-8">
+            <div className="">
+              <div className="mx-auto w-full max-w-xl lg:mx-0">
+                <h2 className="w-[350px] md:w-[365px] font-sans text-3xl font-bold tracking-tight  text-green-700  ">
+                  What your fellow students ask us:
+                </h2>
+              </div>
             </div>
           </div>
         </div>
+        <div className="container lg:mx-auto mt-10 lg:ml-10">
+          {features.map((d) => {
+            return <Accordion title={d?.title}>{d?.description}</Accordion>
+          })}
+        </div>
       </div>
-      <div className="container mx-auto mt-10 ml-10">
-        {features.map((d) => {
-          return <Accordion title={d?.title}>{d?.description}</Accordion>
-        })}
-      </div>
-    </div>
+      <VerticalMarquees />
+    </>
   )
 }

@@ -9,7 +9,12 @@ import CheckboxFilter from './checkboxFilter'
 // import RatingStars from './RatingStars'
 // import CheckboxFilter from './CheckboxFilter'
 
-function FilterDropdown() {
+function FilterDropdown({
+  filterValues,
+  setFilterValues,
+  bookCondition,
+  setBookCondition,
+}) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -30,9 +35,20 @@ function FilterDropdown() {
 
       {isOpen && (
         <div className="p-10 absolute z-10 w-[350px] bg-white mt-2 border border-gray-300 rounded-[20px] shadow-lg">
-          <PriceRange />
-          <RatingStars />
-          <CheckboxFilter />
+          <PriceRange
+            filterValues={filterValues}
+            setFilterValues={setFilterValues}
+          />
+          <RatingStars
+            filterValues={filterValues}
+            setFilterValues={setFilterValues}
+          />
+          <CheckboxFilter
+            filterValues={filterValues}
+            setFilterValues={setFilterValues}
+            bookCondition={bookCondition}
+            setBookCondition={setBookCondition}
+          />
           {/* Add more checkboxes as needed */}
         </div>
       )}

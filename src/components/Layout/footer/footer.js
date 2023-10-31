@@ -6,50 +6,14 @@ import { useToast } from '@/components/UI/use-toast'
 import Image from 'next/image'
 
 export function Footer() {
-  const [email, setEmail] = useState('')
-  const { toast } = useToast()
+ 
 
-  const handleSubmitEmail = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: email,
-        }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-      console.log(response)
-      if (response.ok) {
-        console.log('succesfull')
-        toast({
-          title: 'Success',
-          description: 'Subscription successful!',
-        })
-        setEmail('')
-      } else {
-        console.log('failure')
-        toast({
-          title: 'Error',
-          description: 'Subscription failed. Please try again.',
-        })
-      }
-    } catch (error) {
-      console.log(error)
-      toast({
-        title: 'Error',
-        description: 'An error occurred. Please try again.',
-      })
-    }
-  }
+ 
   return (
     <footer className="bg-white" aria-labelledby="footer-heading">
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32 ">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
+        <div className="lg:flex justify-between items-center text-center  ">
+          <div className="flex items-center justify-center">
             <Image
               src="./logoImage.svg"
               height={10}
@@ -117,25 +81,26 @@ export function Footer() {
               </div>
             </div>
           </div>
-          <span>
+          <span className="flex flex-row lg:flex-col items-center justify-center mt-10">
             <Image
               src="./facebookIcon.svg"
               height={10}
               width={24}
-              className="mb-4"
+              className="mb-4 mr-4"
               alt="Your Company"
             />
             <Image
               src="./instagramIcon.svg"
               height={10}
               width={24}
-              className="mb-4"
+              className="mb-4 mr-4"
               alt="Your Company"
             />
             <Image
               src="./linkedInIcon.svg"
               height={10}
               width={24}
+              className="mb-4 mr-4"
               alt="Your Company"
             />
           </span>

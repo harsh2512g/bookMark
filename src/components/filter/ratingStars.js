@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 
-function RatingStars() {
+function RatingStars({ filterValues, setFilterValues }) {
   const [selectedRating, setSelectedRating] = useState(0)
 
   const handleStarClick = (rating) => {
-    setSelectedRating(rating)
+    setFilterValues((prev) => ({
+      ...prev,
+      rating: rating,
+    }))
   }
 
   return (
@@ -21,10 +24,10 @@ function RatingStars() {
             key={index}
             onClick={() => handleStarClick(star)}
             className={` cursor-pointer ${
-              star <= selectedRating ? 'text-green-500' : 'text-gray-400'
+              star <= filterValues?.rating ? 'text-green-500' : 'text-gray-400'
             }`}
           >
-            {star <= selectedRating ? '★' : '☆'}
+            {star <= filterValues?.rating ? '★' : '☆'}
           </span>
         ))}
       </div>

@@ -3,10 +3,11 @@ import Button from '../Common/Button'
 import GoogleSignIn from '../Common/GoogleSignIn'
 import EmailInvitation from './emailinvitation'
 import { firebasesignUp } from '@/firebase/auth/signup'
-import firebaseAddDoc from '@/firebase/utils'
+
 import { toast } from 'react-toastify'
 
 import { useRouter } from 'next/navigation'
+import firebaseAddDoc from '@/firebase/utils'
 
 const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
   const router = useRouter()

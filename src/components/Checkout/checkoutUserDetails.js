@@ -1,22 +1,8 @@
 'use client'
-import React, { useState } from 'react'
-import CartModal from '../Cart/cartModal'
-import Button from '../Common/Button'
+import React from 'react'
 
 const CheckoutUserDetails = () => {
-  const [formDetails, setFormDetails] = useState({
-    name: '',
-    email: '',
-    cardNumber: '',
-    expirationDate: '',
-    cvc: '',
-    billingAddress: '',
-    aptNumber: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    saveCardDetails: false,
-  })
+
   return (
     <div className="w-[0px] sm:w-[200px] md:w-[350px] lg:w-[800px]  grow shrink basis-0 justify-start items-center gap-10 flex">
       <div className=" grow shrink basis-0 flex-col justify-start items-start gap-3 inline-flex">

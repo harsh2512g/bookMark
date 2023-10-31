@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const SliderCard = ({ ele, data, index }) => {
   return (
-    <div>
+    <div >
       <div
         className=" overflow-hidden rounded-[20px] w-[440px] h-[440px] z-10 bg-cover"
         style={{

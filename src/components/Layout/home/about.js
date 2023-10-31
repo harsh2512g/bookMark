@@ -1,9 +1,8 @@
 'use client'
-import Image from 'next/image'
-import { useState, useRef } from 'react'
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+import {  useRef } from 'react'
 import SliderCard from './sliderCards'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useDraggable } from '@/utils/common'
 
 const data = [
   {
@@ -38,6 +37,15 @@ const cardsToShow = {
 const SCROLLER_VALUE = 350
 
 export function About() {
+  const {
+    elementRef,
+    mouseDownHandler,
+    mouseLeaveHandler,
+    mouseUpHandler,
+    mouseMoveHandler,
+    active,
+  } = useDraggable()
+
   const swiperRef = useRef(null)
   console.log({ swiperRef })
 
@@ -45,22 +53,30 @@ export function About() {
     const container = swiperRef.current
     container.scrollLeft += amount
   }
+  const setBothRefs = (el) => {
+    if (elementRef) {
+      elementRef.current = el;
+    }
+    if (swiperRef) {
+      swiperRef.current = el;
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto relative">
       <div
-        className="text-green-400  bg-green-200 absolute top-[50%]  hover:bg-green-400  cursor-pointer"
+        className="hidden md:block text-green-400  bg-green-200 absolute top-[50%]  hover:bg-green-400  cursor-pointer"
         onClick={() => scrollTo(-SCROLLER_VALUE)}
       >
         <ChevronLeft size={32} />
       </div>
       <div
-        className="text-green-400  w-50 h-50 bg-green-200 absolute top-[50%] right-0 hover:bg-green-400 cursor-pointer z-50"
+        className="hidden md:block text-green-400  w-50 h-50 bg-green-200 absolute top-[50%] right-0 hover:bg-green-400 cursor-pointer z-50"
         onClick={() => scrollTo(+SCROLLER_VALUE)}
       >
         <ChevronRight size={32} />
       </div>
-      <div className=" bg-[#128848] py-24 sm:py-32 flex items-center">
+      <div className=" bg-green-700 py-24 sm:py-32 flex flex-col md:flex-row items-center">
         <div className="px-6 lg:px-10">
           <div className="">
             <div className="mx-auto w-full max-w-xl lg:mx-0">
@@ -77,8 +93,13 @@ export function About() {
         </div>
 
         <div
-          className="swiperContainer flex flex-row gap-8 itema-center overflow-x-scroll scroll-smooth ease-in-out"
-          ref={swiperRef}
+          className={`hidden swiperContainer md:flex flex-row gap-8 item-center overflow-x-scroll scroll-smooth ease-in-out  ${active?"cursor-grabbing":"cursor-pointer"}`}
+          // ref={swiperRef}
+          ref={setBothRefs}
+          onMouseDown={mouseDownHandler}
+          onMouseLeave={mouseLeaveHandler}
+          onMouseUp={mouseUpHandler}
+          onMouseMove={mouseMoveHandler}
         >
           {data.map((ele, index) => (
             <SliderCard index={index} data={data} ele={ele} />
