@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { BiCheck } from 'react-icons/bi'
 import LoginSignUpModal from '../loginSignUpModal'
 import { firebaseGetDoc } from '@/firebase/auth/signup'
@@ -27,11 +27,11 @@ const BookInfo = ({ pathname }) => {
   const uid = Cookies.get('bookMarkUid')
   const router = useRouter()
 
- 
   // Ensure there are at least 3 segments and "marketplace" is the second to last segment.
 
-  const pathSegments = pathname.split('/')
-  const bookId = pathSegments[2]
+  const pathSegments = pathname?.split('/')
+  const bookId = pathSegments && pathSegments[2]
+
   useEffect(() => {
     const fetchBook = async () => {
       let data = await firebaseGetDoc('books', bookId)
