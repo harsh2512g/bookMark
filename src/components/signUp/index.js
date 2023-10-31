@@ -46,7 +46,7 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
       console.log({ user })
       let updatedUserData = { ...user, allowPushNotifications: true, cart: [] }
       delete updatedUserData.accessToken
-      
+
       await firebaseAddDoc(updatedUserData)
       let prepareParams = {
         uid: user?.uid,
@@ -94,15 +94,6 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
       router.push('/')
 
       toast.success('User Logged in Successfully', {
-        position: 'bottom-left',
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      })
-    } else {
-      toast.error(errorMessage, {
         position: 'bottom-left',
         autoClose: 10000,
         hideProgressBar: false,
