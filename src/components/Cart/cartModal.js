@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '../Common/Button'
 
-const CartModal = () => {
+const CartModal = ({price}) => {
   return (
     <div className="shadow-lg w-[350px] md:w-[400px] mt-11 ">
       <p className="font-bold text-xl text-center border-b-2 border-stone-300 pb-6 px-2">
@@ -10,7 +10,7 @@ const CartModal = () => {
       <div>
         <div className="flex justify-between px-10 mt-8">
           <p className="font-bold text-lg">Subtotal:</p>
-          <p>$100</p>
+          <p>${price}</p>
         </div>
         <div className="flex justify-between px-10 mt-8">
           <p className="font-bold text-lg">Sales tax (5%):</p>
@@ -22,7 +22,7 @@ const CartModal = () => {
         </div>
         <div className="flex justify-between px-10 mt-8">
           <p className="font-bold text-lg">Total:</p>
-          <p>$105.00</p>
+          <p>${price+5}</p>
         </div>
         <p className="mt-10 w-[309px] mx-auto text-neutral-500 text-sm ">
           After purchasing through BM, the buyer will reach out to you to

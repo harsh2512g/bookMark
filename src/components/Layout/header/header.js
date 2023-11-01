@@ -10,7 +10,8 @@ import { useSelector } from 'react-redux'
 import { firebaseGetAllDoc, firebaseGetDoc } from '@/firebase/utils'
 import { useDispatch } from 'react-redux'
 import { setBooks } from '@/redux/authSlice'
-
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/authContext'
 const navigation = [
   { name: 'How it Works', href: '/about' },
   { name: 'Marketplace', href: '/marketplace' },
@@ -18,11 +19,10 @@ const navigation = [
 ]
 
 export function Header() {
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const uid = useSelector((state) => state?.user?.uid)
-  console.log({ uid })
   const dispatch = useDispatch()
-
+  const { user } = useAuth()
   useEffect(() => {
     const fetchBooks = async () => {
       const data = await firebaseGetAllDoc('books')
@@ -82,7 +82,10 @@ export function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
-          <Link href="/uploadBook" className="text-green-700 text-lg font-bold mr-5">
+          <Link
+            href="/uploadBook"
+            className="text-green-700 text-lg font-bold mr-5"
+          >
             Sell Textbooks
           </Link>
           <Link
@@ -97,8 +100,20 @@ export function Header() {
               alt="Your Company"
             />
           </Link>
+          <div className="w-[95.35px] h-[43.08px] px-2.5 py-[5px] bg-white rounded-[40px] shadow justify-center items-center gap-2.5 inline-flex">
+            <div className="h-[33.08px] bg-white justify-between items-center flex gap-3">
+              <ProfileDropdown />
 
-          <ProfileDropdown />
+              <Image
+                src={user?.photoURL ? user?.photoURL : './profile.svg'}
+                height={90}
+                width={29}
+                className="mx-auto cursor-pointer rounded-full "
+                alt=""
+                onClick={() => router.push('/profile')}
+              />
+            </div>
+          </div>
         </div>
       </nav>
       <Dialog

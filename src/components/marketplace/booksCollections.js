@@ -1,9 +1,16 @@
-import { firebaseGetAllDoc, firebaseGetDoc } from '@/firebase/auth/signup'
-import { firebaseAddBookInCart } from '@/firebase/utils'
+import { firebaseGetAllDoc } from '@/firebase/auth/signup'
+import {
+  firebaseAddBookInCart,
+  firebaseGetDoc,
+  firebaseUpdateBookMarkDoc,
+} from '@/firebase/utils'
+import { BookmarkSimple } from '@phosphor-icons/react'
 import { Spinner } from 'flowbite-react'
+import Cookies from 'js-cookie'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid'
 
 // const books = [
@@ -42,7 +49,9 @@ import { v4 as uuidv4 } from 'uuid'
 const BookCollection = ({ selectedCategory }) => {
   const [books, setBooks] = useState()
   const [loading, setLoading] = useState(false)
-  const [addCart, setAddCart] = useState()
+  const [bookMarks, setBookMarks] = useState()
+
+  const uid = Cookies.get('bookMarkUid')
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true)
@@ -53,10 +62,46 @@ const BookCollection = ({ selectedCategory }) => {
     }
     fetchBooks()
   }, [selectedCategory])
-console.log({books})
+
+  const addToBookMark = async (d) => {
+    setLoading(true)
+
+    const data = await firebaseUpdateBookMarkDoc('users', uid, d?.id)
+    setBookMarks(data)
+    console.log({ data })
+    if (!data) {
+      toast.error('Error in adding to bookmark', {
+        position: 'bottom-left',
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
+    } else {
+      console.log('successfully added to bookmark')
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    const fetchuserData = async () => {
+      setLoading(true)
+      const data = await firebaseGetDoc('users', uid)
+      setBookMarks(data?.bookMark)
+      setLoading(false)
+    }
+
+    fetchuserData()
+  }, [])
+  console.log({ books, bookMarks })
   return (
     <>
-      {loading && <div className="text-center mt-8"><Spinner  /></div>}
+      {loading && (
+        <div className="text-center mt-8">
+          <Spinner />
+        </div>
+      )}
       {books?.length > 0 ? (
         <div className="p-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {books?.map((d, index) => (
@@ -69,7 +114,7 @@ console.log({books})
                   className=" shadow-lg mb-3 mx-auto"
                   alt="Your Company"
                 />
-                <div className="w-[250px] mx-auto flex">
+                <div className="w-[250px] mx-auto flex justify-between">
                   <Link href={`/marketplace/${d?.id}`} className="">
                     <div className="flex justify-between ml-2">
                       <div className="text-zinc-800 text-lg font-bold leading-snug mt-2 mb-2">
@@ -86,14 +131,12 @@ console.log({books})
                   </Link>
                   <div
                     className="w-[25px] lg:w-[30px] cursor-pointer"
-                    // onClick={() => addToCart(d)}
+                    onClick={() => addToBookMark(d)}
                   >
-                    <Image
-                      src="/addToCart.png"
-                      height={5}
-                      width={30}
-                      className=" mt-2"
-                      alt="Your Company"
+                    <BookmarkSimple
+                      size={24}
+                      color="#128848"
+                      weight={bookMarks?.includes(d?.id) ? 'fill' : 'regular'}
                     />
                   </div>
                 </div>

@@ -17,7 +17,7 @@ const HeroElement = () => {
   return (
     <div className=" max-w-7xl  bg-[url('/marketPlacebg.png')] bg-center  bg-no-repeat w-full mx-auto">
       <div className="flex flex-col items-center justify-center  max-w-7xl   w-full h-[550px] mx-auto">
-        <div className="w-[300px] sm:w-[400px] lg:w-[773px] mx-auto text-center  text-white text-2xl sm:text-3xl lg:text-4xl leading-[40px] lg:leading-[55px] font-bold ">
+        <div className="w-[300px] sm:w-[400px] lg:w-[552px] mx-auto text-center  text-white text-2xl sm:text-3xl lg:text-4xl leading-[40px] lg:leading-[55px] font-bold ">
           Peer-To-Peer College Textbook Marketplace
         </div>
 

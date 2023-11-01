@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -75,6 +76,9 @@
   }
 }
 
+* {
+  font-family: 'DM Sans', sans-serif !important;
+}
 .swiper-wrapper {
   width: 100%;
   display: flex !important;
@@ -171,5 +175,5 @@
 }
 .rfm-marquee-container1 {
   overflow-x: visible !important;
-  display:block !important
+  display: block !important;
 }

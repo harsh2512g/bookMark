@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../Common/Button'
 import GoogleSignIn from '../Common/GoogleSignIn'
 import EmailInvitation from './emailinvitation'
@@ -8,6 +8,8 @@ import { toast } from 'react-toastify'
 
 import { useRouter } from 'next/navigation'
 import firebaseAddDoc from '@/firebase/utils'
+import { useAuth } from '@/contexts/authContext'
+import Cookies from 'js-cookie'
 
 const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
   const router = useRouter()
@@ -16,6 +18,7 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
     userName: '',
     password: '',
   })
+ 
 
   const handleSignUp = async () => {
     console.log({ userDetails })

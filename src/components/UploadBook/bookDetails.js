@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setBookInfo } from '@/redux/authSlice'
 import ImageUploader from './imageUploader'
 import { uploadImages } from '@/firebase/utils'
+import Cookies from 'js-cookie'
 
 const bookConditionDropDownOptions = [
   'Brand New',
@@ -25,7 +26,8 @@ const categoryOptions = [
 ]
 
 const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
-  const { uid } = useUidContext()
+  // const { uid } = useUidContext()
+  const uid = Cookies.get('bookMarkUid')
   const dispatch = useDispatch()
   const data = useSelector((state) => state?.bookInfo)
   const [selectedOption, setSelectedOption] = useState(data?.selectedOption)
@@ -94,14 +96,12 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
           category,
         }),
       )
-     
-    
     }
     //   const data = await firebaseAddBookDetails(formDetails, formDetails?.id)
   }
   console.log({ files })
-  const handleUpload = (image,file) => {
-    setUploadedImages((prev) => [...prev, {image,file}])
+  const handleUpload = (image, file) => {
+    setUploadedImages((prev) => [...prev, { image, file }])
   }
 
   const handleRemoveImage = (index) => {
@@ -125,7 +125,11 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             {uploadedImages?.map((image, index) => (
               <div key={index} className="relative">
-                <img src={image?.image} alt={`Uploaded ${index}`} className="w-64" />
+                <img
+                  src={image?.image}
+                  alt={`Uploaded ${index}`}
+                  className="w-64"
+                />
                 <span
                   className="absolute top-0 right-0 cursor-pointer bg-red-500 text-white"
                   onClick={() => handleRemoveImage(index)}

@@ -1,14 +1,15 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import SpinnerComponent from '../Common/Spinner'
+import { useRouter } from 'next/navigation'
 import {
   firebaseGetDoc,
   firebaseRemoveFromDoc,
-  firebaseUpdateDoc,
 } from '@/firebase/utils'
 import Cookies from 'js-cookie'
 
 const CartDashboard = ({ bookId, loading, setOnRemoveClick }) => {
+  const router = useRouter()
   const [data, setData] = useState()
   const uid = Cookies.get('bookMarkUid')
   useEffect(() => {
@@ -21,17 +22,21 @@ const CartDashboard = ({ bookId, loading, setOnRemoveClick }) => {
   }, [])
   const onRemove = async () => {
     const removeData = await firebaseRemoveFromDoc('users', uid, bookId)
-    
+
     setOnRemoveClick(true)
   }
+  console.log({ data })
   return (
     <div className="mt-11">
       {loading && <SpinnerComponent />}
 
       <>
-        <div className="mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex">
+        <div
+          className="cursor-pointer mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex"
+          onClick={() => router.push(`/marketplace/${data?.id}`)}
+        >
           <Image
-            src="/bookImg.png"
+            src={data?.urls[0]}
             height={10}
             width={120}
             className=" shadow-lg mb-3"

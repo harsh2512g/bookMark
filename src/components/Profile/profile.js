@@ -1,11 +1,15 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Gear,
   BookmarkSimple,
   Chat,
   CalendarBlank,
 } from '@phosphor-icons/react'
+import MyListing from './myListing'
+import MyOrders from './myOrders'
+import { firebaseGetDocs } from '@/firebase/utils'
+import Cookies from 'js-cookie'
 const profileOptions = [
   {
     icon: <Gear size={24} color="green" />,
@@ -20,7 +24,7 @@ const profileOptions = [
   {
     icon: <BookmarkSimple size={24} color="green" />,
     name: 'Bookmarks',
-    redirectTo: '#',
+    redirectTo: '/bookMark',
   },
   {
     icon: <CalendarBlank size={24} color="green" />,
@@ -30,6 +34,16 @@ const profileOptions = [
 ]
 
 const Profile = () => {
+  const uid = Cookies.get('bookMarkUid')
+  const [myListingBooks, setMyListingBooks] = useState()
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const data = await firebaseGetDocs('books', 'user_id', uid)
+      setMyListingBooks(data)
+      console.log({ data })
+    }
+    fetchBooks()
+  }, [])
   return (
     <div className=" max-w-7xl   w-full mx-auto mt-32">
       <div className="text-center text-zinc-800 text-[50px] font-bold">
@@ -39,7 +53,7 @@ const Profile = () => {
         This is your dashboard where you can find textbook listings, orders, and
         more.{' '}
       </p>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
           <div className="rounded-[20px] border border-stone-300 px-8 py-10 mb-8">
             <div className="mb-6">
@@ -50,7 +64,7 @@ const Profile = () => {
               <p className="text-zinc-800 text-lg font-normal">Class of '24</p>
             </div>
             {profileOptions.map((d) => (
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-6 cursor-pointer">
                 <div className="mr-6">{d?.icon}</div>
                 <div className="text-zinc-800 text-lg font-bold ">
                   {d?.name}
@@ -64,27 +78,26 @@ const Profile = () => {
               <p className="text-zinc-800 text-lg font-normal">
                 University of Florida{' '}
               </p>
-              
             </div>
-            
+
             <div className="mb-6">
               <p className="text-zinc-800 text-xl font-bold">COS1234</p>
               <p className="text-zinc-800 text-lg font-normal">
                 Computer Science
               </p>
-              
             </div>
             <div className="mb-6">
               <p className="text-zinc-800 text-xl font-bold">BIO5678</p>
-              <p className="text-zinc-800 text-lg font-normal">
-                Biology
-              </p>
-              
+              <p className="text-zinc-800 text-lg font-normal">Biology</p>
             </div>
           </div>
         </div>
-        <div className="rounded-[20px] border border-stone-300">harsh</div>
-        <div className="rounded-[20px] border border-stone-300">harsh</div>
+        <div className="rounded-[20px] border border-stone-300 mt-6 md:mt-0">
+          <MyListing myListingBooks={myListingBooks}/>
+        </div>
+        <div className="rounded-[20px] border border-stone-300 mt-6 md:mt-0">
+          <MyOrders />
+        </div>
       </div>
     </div>
   )

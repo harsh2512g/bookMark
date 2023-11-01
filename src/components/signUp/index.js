@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import Button from '../Common/Button'
 // import GoogleSignIn from '../Common/GoogleSignIn'
 // import EmailInvitation from './emailinvitation'
@@ -19,76 +19,30 @@ import { useDispatch, useSelector } from 'react-redux'
 import { store } from '@/redux/store'
 import { setUid } from '@/redux/authSlice'
 import { sendSignInLinkToEmail } from 'firebase/auth'
+import { useAuth } from '@/contexts/authContext'
 
-const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
+const SignUp = () => {
+  const [onMakeAccount, setOnMakeAccount] = useState(false)
   const router = useRouter()
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
   const [userDetails, setUserDetails] = useState({
     email: '',
     userName: '',
-  
   })
-
-  const uid = useSelector((state) => state?.uid)
-  console.log({ uid }, 'harsh')
-  const user = useAuthState(auth)
+ 
+  const { user } = useAuth()
   const [verifyId, setVerifyID] = useState(null)
-  // const { uid, setUid } = useUidContext()
-  // const handleSignUp = async () => {
-  //   console.log({ userDetails })
-  //   try {
-  //     // setIsPending(true)
-  //     const user = await firebasesignUp({
-  //       username: userDetails?.userName,
-  //       email: userDetails?.email,
-  //       password: userDetails?.password,
-  //     })
-
-  //     console.log({ user })
-  //     let updatedUserData = { ...user, allowPushNotifications: true, cart: [] }
-  //     delete updatedUserData.accessToken
-
-  //     await firebaseAddDoc(updatedUserData)
-  //     let prepareParams = {
-  //       uid: user?.uid,
-  //       email: userDetails?.email,
-  //       name: userDetails?.userName,
-  //     }
-  //     console.log('after firebase add doc')
-
-  //     if (user && !user?.error) {
-  //       dispatch(setUid(user?.uid))
-
-  //       Cookies.set('bookMarkUid', user?.uid)
-  //       router.push('/')
-
-  //       toast.success('User Registered Successfully', {
-  //         position: 'bottom-left',
-  //         autoClose: 10000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //       })
-  //     } else {
-  //       toast.error(user.error, {
-  //         position: 'bottom-left',
-  //         autoClose: 10000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //       })
-  //     }
-  //   } catch (e) {
-  //     //   setIsPending(false)
-  //     console.log({ e })
-  //   }
-  // }
-
+  
+  console.log({ user })
+  useEffect(() => {
+    if (user) {
+      Cookies.set('bookMarkUid', user?.uid)
+      router.push('/')
+    }
+  }, [user])
   const handleSignUp = async () => {
-    if(!userDetails?.email || !userDetails?.userName){
+    if (!userDetails?.email || !userDetails?.userName) {
       toast.error('Please Fill all fields', {
         position: 'bottom-left',
         autoClose: 10000,
@@ -97,19 +51,20 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
         pauseOnHover: true,
         draggable: true,
       })
-      return;
+      return
     }
     const actionCodeSettings = {
       url: 'http://localhost:3000/confirmSignUp',
       handleCodeInApp: true,
     }
-   
+
     try {
       await sendSignInLinkToEmail(auth, userDetails?.email, actionCodeSettings)
       setMessage(
         `Email sent to ${userDetails?.email}. Please check your inbox.`,
       )
-      window.localStorage.setItem('emailForSignIn', userDetails?.email)
+      setOnMakeAccount(true)
+      localStorage.setItem('emailForSignIn', userDetails?.email)
     } catch (error) {
       setMessage(`Error: ${error.message}`)
     }
@@ -176,7 +131,6 @@ const SignUp = ({ onMakeAccount, setOnMakeAccount }) => {
                 }
               />
             </div>
-           
             <div>
               <Button onClick={handleSignUp} text={'Make account'} />
             </div>

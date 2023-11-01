@@ -5,16 +5,19 @@ import 'swiper/swiper-bundle.css' // Make sure to import swiper CSS
 import { UidProvider } from '@/contexts/uidContext'
 
 import { Providers } from '@/redux/provider'
+import { AuthProvider } from '@/contexts/authContext'
 
 export default function AppLayout({ children }) {
   return (
     <html lang="en" className={`bg-white`}>
       <body className="flex flex-col">
-        <Providers>
-          <UidProvider>
-            <FirebaseAuthProvider>{children}</FirebaseAuthProvider>
-          </UidProvider>
-        </Providers>
+        <AuthProvider>
+          <Providers>
+            <UidProvider>
+              <FirebaseAuthProvider>{children}</FirebaseAuthProvider>
+            </UidProvider>
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   )

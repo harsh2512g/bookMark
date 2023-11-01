@@ -50,7 +50,7 @@ const ConfirmSignUp = () => {
             // await SendNotification(user.uid, 'Account created successfully.')
           }
           setMessage('Successfully signed up!')
-          window.localStorage.removeItem('emailForSignIn')
+          localStorage.removeItem('emailForSignIn')
           Cookies.set('bookMarkUid', user?.uid)
           // Redirect to home page after successful login
           router.push('/')

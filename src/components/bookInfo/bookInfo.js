@@ -9,12 +9,14 @@ import Cookies from 'js-cookie'
 import {
   firebaseAddBookInCart,
   firebaseGetDocs,
-  firebaseUpdateDoc,
+  firebaseUpdateCartDoc,
 } from '@/firebase/utils'
 import { toast } from 'react-toastify'
 
 import { useRouter } from 'next/navigation'
 import SpinnerComponent from '../Common/Spinner'
+import db from '@/firebase/firebaseDB'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
 
 const BookInfo = ({ pathname }) => {
   const [addTocart, setAddToCart] = useState(false)
@@ -54,10 +56,39 @@ const BookInfo = ({ pathname }) => {
     fetchData()
   }, [bookId])
 
+  async function initiateOrGetConversation() {
+    // Create a compound field for the participant pair
+    const participantPair = [uid, bookData?.user_id].sort().join('_')
+    console.log({ participantPair })
+    // Check if a conversation already exists for this pair
+    const conversationsRef = collection(db, 'conversations')
+    const q = query(
+      conversationsRef,
+      where('participantPair', '==', participantPair),
+    )
+
+    const existingConvo = await getDocs(q)
+
+    let conversationId1
+    if (existingConvo.empty) {
+      // If conversation doesn't exist, create a new one
+      const newConvoRef = await addDoc(conversationsRef, {
+        participants: [uid, bookData?.user_id],
+        participantPair: participantPair,
+      })
+      conversationId1 = newConvoRef.id
+    } else {
+      conversationId1 = existingConvo.docs[0].id
+    }
+
+    // setConversationId(conversationId1)
+  }
+
   const addToCartFunc = async () => {
+    initiateOrGetConversation()
     setLoading(true)
 
-    const data = await firebaseUpdateDoc('users', uid, bookId)
+    const data = await firebaseUpdateCartDoc('users', uid, bookId)
     if (!data) {
       console.log('Error in adding in cart')
     } else {
@@ -132,11 +163,10 @@ const BookInfo = ({ pathname }) => {
                 alt="Your Company"
               /> */}
               {bookData?.urls?.map((image, index) => (
-              <div key={index} className="relative">
-                <img src={image} alt={`Uploaded ${index}`} className="w-64" />
-               
-              </div>
-            ))}
+                <div key={index} className="relative">
+                  <img src={image} alt={`Uploaded ${index}`} className="w-64" />
+                </div>
+              ))}
             </div>
             <div className="flex flex-col lg:flex-row mt-10 lg:mt-0 justify-between">
               <div className="w-[390px] border-r-2 pr-8 border-[#C4C4C4]">

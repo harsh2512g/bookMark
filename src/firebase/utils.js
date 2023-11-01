@@ -77,7 +77,7 @@ export async function firebaseGetDocs(collectionName, key, value) {
   }
 }
 
-export async function firebaseUpdateDoc(collectionName, id, updatedData) {
+export async function firebaseUpdateCartDoc(collectionName, id, updatedData) {
   try {
     // Get a reference to the specific document by its ID
     const docRef = doc(firestore, collectionName, id)
@@ -100,7 +100,48 @@ export async function firebaseUpdateDoc(collectionName, id, updatedData) {
 
     return true
   } catch (error) {
-    console.error('firebaseUpdateDoc error:', error.message)
+    console.error('firebaseUpdateCartDoc error:', error.message)
+    return false // returning false instead of null for consistency with the true return value
+  }
+}
+
+export async function firebaseUpdateBookMarkDoc(
+  collectionName,
+  id,
+  updatedData,
+) {
+  try {
+    // Get a reference to the specific document by its ID
+    const docRef = doc(firestore, collectionName, id)
+
+    // Fetch the document to check if it exists
+    const docSnap = await getDoc(docRef)
+    if (!docSnap.exists()) {
+      throw new Error('No document with the given ID found')
+    }
+
+    const currentBookMarks = docSnap.data().bookMark || []
+
+    if (currentBookMarks.includes(updatedData)) {
+      // If updatedData is already in the bookMark array, remove it
+      const index = currentBookMarks.indexOf(updatedData)
+      if (index > -1) {
+        currentBookMarks.splice(index, 1)
+      }
+    } else {
+      // If updatedData is not in the bookMark array, add it
+      currentBookMarks.push(updatedData)
+    }
+
+    console.log({ updatedData })
+
+    // Update the document with the modified array
+    const updateObj = { bookMark: currentBookMarks }
+    await updateDoc(docRef, updateObj)
+
+    return currentBookMarks
+  } catch (error) {
+    console.error('firebaseUpdateBookMarkDoc error:', error.message)
     return false // returning false instead of null for consistency with the true return value
   }
 }
