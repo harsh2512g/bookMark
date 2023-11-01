@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux'
 import { setBooks } from '@/redux/authSlice'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/authContext'
+import { ShoppingCartSimple } from '@phosphor-icons/react'
 const navigation = [
   { name: 'How it Works', href: '/about' },
   { name: 'Marketplace', href: '/marketplace' },
@@ -92,13 +93,7 @@ export function Header() {
             href="/cart"
             className="text-sm font-semibold leading-6 mx-3 text-white mr-5"
           >
-            <Image
-              src="./Cart.svg"
-              height={90}
-              width={29}
-              className="mx-auto"
-              alt="Your Company"
-            />
+            <ShoppingCartSimple size={32} weight="fill" color="green" />
           </Link>
           <div className="w-[95.35px] h-[43.08px] px-2.5 py-[5px] bg-white rounded-[40px] shadow justify-center items-center gap-2.5 inline-flex">
             <div className="h-[33.08px] bg-white justify-between items-center flex gap-3">

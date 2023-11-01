@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation'
 import SpinnerComponent from '../Common/Spinner'
 import db from '@/firebase/firebaseDB'
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
+import Lightbox from 'react-image-lightbox'
+import 'react-image-lightbox/style.css'
 
 const BookInfo = ({ pathname }) => {
   const [addTocart, setAddToCart] = useState(false)
@@ -28,7 +30,8 @@ const BookInfo = ({ pathname }) => {
   const [loading, setLoading] = useState(false)
   const uid = Cookies.get('bookMarkUid')
   const router = useRouter()
-
+  const [photoIndex, setPhotoIndex] = useState(0) // State to track the index of the currently viewed image
+  const [isOpen, setIsOpen] = useState(false)
   // Ensure there are at least 3 segments and "marketplace" is the second to last segment.
 
   const pathSegments = pathname?.split('/')
@@ -140,20 +143,57 @@ const BookInfo = ({ pathname }) => {
     }
     fetchSellerData()
   }, [bookData])
-  console.log({ bookData })
+
+  console.log({ bookData, sellerData })
   return (
     <>
       {loading && <SpinnerComponent />}
-      <div className=" p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[-9%] xl:mt-[4%] w-full mx-auto">
+      <div className=" p-10 max-w-7xl  md:mt-20 lg:mt-24  w-full mx-auto">
         <div>
-          <div className="mt-24 lg:mt-0 text-zinc-900 text-3xl font-bold mb-4">
+          <div className="mt-24 lg:mt-0 text-zinc-900 text-3xl font-bold ">
             {bookData?.title}
           </div>
           <div className="text-neutral-500 text-md font-medium mb-4 ">
             {/* {d?.text} */}
           </div>
           <div className="text-neutral-500 text-sm font-mormal ">{`Authors: ${bookData?.author} | 1st Edition | ISBN: ${bookData?.isbn}`}</div>
-          <div className="mt-32 flex flex-col lg:flex-row justify-between">
+          <div className="mt-24 flex flex-col lg:flex-row justify-between">
+            <div className="flex">
+              <Image
+                src={bookData?.urls[0]}
+                height={20}
+                width={340}
+                className=" mr-8 cursor-pointer"
+                onClick={() => {
+                  setIsOpen(true)
+                  setPhotoIndex(0)
+                }}
+                // alt={`Uploaded ${index}`}
+              />
+              <div>
+                {bookData?.urls.map((image, index) => (
+                  <div
+                    className={`${index !== 0 ? 'mb-4' : 'mb-0'}`}
+                    onClick={() => {
+                      setIsOpen(true)
+                      setPhotoIndex(index)
+                    }}
+                  >
+                    {index !== 0 && (
+                      <div>
+                        <Image
+                          src={image}
+                          height={20}
+                          width={200}
+                          className=" cursor-pointer "
+                          // alt={`Uploaded ${index}`}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="mx-auto grid grid-cols-2 gap-4 mr-6">
               {/* <Image
                 src="/bookImg.png"
@@ -162,14 +202,21 @@ const BookInfo = ({ pathname }) => {
                 className=" shadow-lg mb-3"
                 alt="Your Company"
               /> */}
-              {bookData?.urls?.map((image, index) => (
+
+              {/* {bookData?.urls?.map((image, index) => (
                 <div key={index} className="relative">
-                  <img src={image} alt={`Uploaded ${index}`} className="w-64" />
+                  <Image
+                    src={image}
+                    height={20}
+                    width={400}
+                    className="  "
+                    alt={`Uploaded ${index}`}
+                  />
                 </div>
-              ))}
+              ))} */}
             </div>
-            <div className="flex flex-col lg:flex-row mt-10 lg:mt-0 justify-between">
-              <div className="w-[390px] border-r-2 pr-8 border-[#C4C4C4]">
+            <div className="flex flex-col md:flex-row mt-10 lg:mt-0 justify-between">
+              <div className="w-[340px] border-r-2 pr-8 border-[#C4C4C4]">
                 <div className="flex  justify-between mb-6">
                   <p className="text-zinc-800 font-bold">Book Condition:</p>
                   <p className="w-[150px]">
@@ -237,7 +284,7 @@ const BookInfo = ({ pathname }) => {
                         addTocart
                           ? 'bg-green-200'
                           : 'bg-green-700 cursor-pointer'
-                      }  w-[350px] h-[47px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
+                      }  w-full h-[47px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
                     >
                       <div
                         className={`${
@@ -253,7 +300,7 @@ const BookInfo = ({ pathname }) => {
                       </div>
                     </div>
                     <div
-                      className={`cursor-pointer mt-4 w-[350px] h-[47px] p-3 ${
+                      className={`cursor-pointer mt-4 w-full h-[47px] p-3 ${
                         addTocart
                           ? 'ml-3'
                           : 'rounded-xl border border-green-900'
@@ -277,10 +324,21 @@ const BookInfo = ({ pathname }) => {
                 <p className="w-[320px] text-zinc-900 text-xl font-bold mb-5">
                   Sold by:
                 </p>
-                <p className="text-zinc-900 text-lg font-bold">
-                  {sellerData?.displayName}
-                </p>
-                <div className="flex items-center">
+                <div className="flex">
+                  {sellerData?.photoURL && (
+                    <Image
+                      src={sellerData?.photoURL}
+                      height={20}
+                      width={29}
+                      className=" rounded-full "
+                      alt=""
+                    />
+                  )}
+                  <div className="text-zinc-900 text-lg font-bold ml-3">
+                    {sellerData?.displayName}
+                  </div>
+                </div>
+                <div className="flex items-center ml-10">
                   <span className="text-green-800">★</span>
                   <p className="text-zinc-900 text-sm font-medium">5.0</p>
                 </div>
@@ -305,6 +363,27 @@ const BookInfo = ({ pathname }) => {
           <LoginSignUpModal
             open={onCheckout}
             setOpen={(val) => setOnCheckout(val)}
+          />
+        )}
+        {isOpen && (
+          <Lightbox
+            mainSrc={bookData?.urls[photoIndex]}
+            nextSrc={bookData?.urls[(photoIndex + 1) % bookData?.urls.length]} // Wrapping around to the first image if at the end
+            prevSrc={
+              bookData?.urls[
+                (photoIndex + bookData?.urls.length - 1) % bookData?.urls.length
+              ]
+            } // Wrapping around to the last image if at the start
+            onCloseRequest={() => setIsOpen(false)}
+            onMovePrevRequest={() =>
+              setPhotoIndex(
+                (photoIndex + bookData?.urls.length - 1) %
+                  bookData?.urls.length,
+              )
+            }
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % bookData?.urls.length)
+            }
           />
         )}
       </div>
