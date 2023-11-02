@@ -22,6 +22,7 @@ import {
   arrayUnion,
   arrayRemove,
 } from 'firebase/firestore'
+import db from './firebaseDB'
 
 export async function firebaseAddBookInCart(data, id) {
   try {
@@ -54,6 +55,17 @@ export async function firebaseAddDoc(data) {
       doc(firestore, 'users', `${auth.currentUser.uid}`),
       data,
     )
+    return true
+  } catch (error) {
+    console.log('error 222 utilss: ', error)
+    return false
+  }
+}
+
+export async function firebaseAddOrderDetails(data, id) {
+  console.log({ data })
+  try {
+    const res = await setDoc(doc(firestore, 'orders', `${id}`), data)
     return true
   } catch (error) {
     console.log('error 222 utilss: ', error)
@@ -196,4 +208,31 @@ export async function uploadImages(files) {
   const imageUrls = await Promise.all(uploadPromises)
   console.log({ imageUrls })
   return imageUrls
+}
+
+export async function initiateOrGetConversation(buyerId, sellerId, orderId) {
+  // Create a compound field for the participant pair
+  const participantPair = [buyerId, sellerId].sort().join('_')
+  console.log({ participantPair })
+  // Check if a conversation already exists for this pair
+  const conversationsRef = collection(db, 'conversations')
+  const q = query(
+    conversationsRef,
+    where('participantPair', '==', participantPair),
+  )
+
+  const existingConvo = await getDocs(q)
+
+  let conversationId1
+  if (existingConvo.empty) {
+    // If conversation doesn't exist, create a new one
+    const newConvoRef = await addDoc(conversationsRef, {
+      participants: [buyerId, sellerId],
+      participantPair: participantPair,
+      orderId,
+    })
+    conversationId1 = newConvoRef.id
+  } else {
+    conversationId1 = existingConvo.docs[0].id
+  }
 }

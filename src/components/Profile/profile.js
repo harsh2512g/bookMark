@@ -9,6 +9,7 @@ import {
 import MyListing from './myListing'
 import MyOrders from './myOrders'
 import { firebaseGetDocs } from '@/firebase/utils'
+import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 const profileOptions = [
   {
@@ -19,7 +20,7 @@ const profileOptions = [
   {
     icon: <Chat size={24} color="green" />,
     name: 'Inbox',
-    redirectTo: '#',
+    redirectTo: '/inbox',
   },
   {
     icon: <BookmarkSimple size={24} color="green" />,
@@ -34,6 +35,7 @@ const profileOptions = [
 ]
 
 const Profile = () => {
+  const router = useRouter()
   const uid = Cookies.get('bookMarkUid')
   const [myListingBooks, setMyListingBooks] = useState()
   useEffect(() => {
@@ -64,7 +66,10 @@ const Profile = () => {
               <p className="text-zinc-800 text-lg font-normal">Class of '24</p>
             </div>
             {profileOptions.map((d) => (
-              <div className="flex items-center mb-6 cursor-pointer">
+              <div
+                className="flex items-center mb-6 cursor-pointer"
+                onClick={() => router.push(d?.redirectTo)}
+              >
                 <div className="mr-6">{d?.icon}</div>
                 <div className="text-zinc-800 text-lg font-bold ">
                   {d?.name}
@@ -93,7 +98,7 @@ const Profile = () => {
           </div>
         </div>
         <div className="rounded-[20px] border border-stone-300 mt-6 md:mt-0">
-          <MyListing myListingBooks={myListingBooks}/>
+          <MyListing myListingBooks={myListingBooks} />
         </div>
         <div className="rounded-[20px] border border-stone-300 mt-6 md:mt-0">
           <MyOrders />

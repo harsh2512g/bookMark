@@ -177,3 +177,11 @@
   overflow-x: visible !important;
   display: block !important;
 }
+
+.sent {
+  @apply text-right self-start p-2 rounded-br-lg rounded-tr-lg rounded-tl-sm m-2;
+}
+
+.received {
+  @apply  text-left self-end p-2 rounded-bl-lg rounded-tl-lg rounded-tr-sm m-2;
+}
