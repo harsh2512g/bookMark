@@ -18,6 +18,7 @@ function PriceRange({ filterValues, setFilterValues }) {
             range: e.target.value,
           }))
         }
+        value={filterValues?.range}
       />
       <span
         className="absolute text-xs bg-white border border-gray-300 rounded px-2 py-0.5 transform -translate-y-1/2"

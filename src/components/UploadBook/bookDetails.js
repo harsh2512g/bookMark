@@ -91,7 +91,7 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
       dispatch(
         setBookInfo({
           ...formDetails,
-          selectedOption,
+          bookCondition:selectedOption,
           uploadedImages,
           category,
         }),

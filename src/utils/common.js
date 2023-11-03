@@ -42,3 +42,47 @@ export const useDraggable = () => {
     active,
   }
 }
+
+
+function formatDateForIndia(date) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+
+  const day = date.getDate()
+  let dayWithSuffix
+
+  if (day % 10 === 1 && day !== 11) {
+    dayWithSuffix = day + 'st'
+  } else if (day % 10 === 2 && day !== 12) {
+    dayWithSuffix = day + 'nd'
+  } else if (day % 10 === 3 && day !== 13) {
+    dayWithSuffix = day + 'rd'
+  } else {
+    dayWithSuffix = day + 'th'
+  }
+
+  return `${
+    monthNames[date.getMonth()]
+  } ${dayWithSuffix}, ${date.getFullYear()}`
+}
+
+export default function createdDate (timestamp)  {
+  console.log({ timestamp })
+  const date = new Date(
+    timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000,
+  )
+  const formattedDate = formatDateForIndia(date)
+  return formattedDate
+}

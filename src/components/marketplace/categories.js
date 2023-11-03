@@ -3,6 +3,8 @@ import Image from 'next/image'
 import React, { useState, useRef, useEffect } from 'react'
 import HorizontalScroll from './horizontalScroll'
 import BookCollection from './booksCollections'
+import FilterDropdown from '../filter'
+import { useDraggable } from '@/utils/common'
 
 const categoriesArray = [
   {
@@ -38,7 +40,27 @@ const categoriesArray = [
 ]
 const SCROLLER_VALUE = 100
 const Categories = () => {
+  const {
+    elementRef,
+    mouseDownHandler,
+    mouseLeaveHandler,
+    mouseUpHandler,
+    mouseMoveHandler,
+    active,
+  } = useDraggable()
   const [selectedCategory, setSelectedCategory] = useState('Chemistry')
+  const [filterValues, setFilterValues] = useState({
+    range: 100,
+    rating: 4,
+  })
+  const [bookCondition, setBookCondition] = useState([
+    'Brand New',
+
+    'Like New (Gently used, no issues)',
+    'Fair (Some signs of usage)',
+
+    'Include listings outside of my campus',
+  ])
   console.log({ selectedCategory })
   const swiperRef = useRef(null)
   console.log({ swiperRef })
@@ -73,60 +95,88 @@ const Categories = () => {
       setScrollIcon({ left: true, right: false })
     }
   }, [scrollPosition])
+  const setBothRefs = (el) => {
+    if (elementRef) {
+      elementRef.current = el
+    }
+    if (swiperRef) {
+      swiperRef.current = el
+    }
+  }
 
   return (
-    <div className=" relative max-w-7xl bg-center bg-no-repeat w-full mx-auto">
-      <div className="flex items-center">
-        {scrollIcon.left && (
-          <div
-            className="text-green-400  bg-green-200 rounded-full hover:bg-green-400  cursor-pointer"
-            onClick={() => scrollTo(-SCROLLER_VALUE)}
-          >
-            <ChevronLeft size={32} />
-          </div>
-        )}
-
-        <div
-          className="flex overflow-x-scroll scroll-smooth swiperContainer"
-          ref={swiperRef}
-          onScroll={handleScrolle}
-        >
-          {categoriesArray?.map((d) => (
+    <div className=" relative  max-w-7xl bg-center bg-no-repeat w-full mx-auto">
+      <div className="md:flex justify-between items-center">
+        <div className="flex items-center md:w-[85%]">
+          {scrollIcon.left && (
             <div
-              onClick={() => setSelectedCategory(d?.name)}
-              className={`${
-                selectedCategory == d?.name ? 'text-bold' : 'text-normal'
-              } cursor-pointer  mx-2 flex flex-col items-center scroll-item-box`}
+              className="text-green-400  bg-green-200 rounded-full hover:bg-green-400  cursor-pointer"
+              onClick={() => scrollTo(-SCROLLER_VALUE)}
             >
-              <Image
-                src="./chemistry.svg"
-                height={10}
-                width={20}
-                className="mx-auto mb-3"
-                alt="Your Company"
-              />
-              <div
-                className={`${
-                  selectedCategory == d?.name
-                    ? 'text-zinc-800 text-sm font-medium border-b-2 border-green-900 pb-2'
-                    : 'text-neutral-500 text-sm font-normal '
-                }`}
-              >
-                {d?.name}
-              </div>
+              <ChevronLeft size={32} />
             </div>
-          ))}
-        </div>
-        {scrollIcon.right && (
+          )}
+
           <div
-            className="text-green-400 rounded-full w-50 h-50 bg-green-200 hover:bg-green-400 cursor-pointer z-50"
-            onClick={() => scrollTo(+SCROLLER_VALUE)}
+            className="flex overflow-x-scroll scroll-smooth swiperContainer transition ease-in-out duration-300 transform"
+            ref={setBothRefs}
+            onMouseDown={mouseDownHandler}
+            onMouseLeave={mouseLeaveHandler}
+            onMouseUp={mouseUpHandler}
+            onMouseMove={mouseMoveHandler}
+            onScroll={handleScrolle}
           >
-            <ChevronRight size={32} />
+            {categoriesArray?.map((d) => (
+              <div
+                onClick={() => setSelectedCategory(d?.name)}
+                className={`${
+                  selectedCategory == d?.name ? 'text-bold' : 'text-normal'
+                } cursor-pointer  mx-2 flex flex-col items-center scroll-item-box`}
+              >
+                <Image
+                  src="./chemistry.svg"
+                  height={10}
+                  width={20}
+                  className="mx-auto mb-3"
+                  alt="Your Company"
+                />
+                <div
+                  className={`${
+                    selectedCategory == d?.name
+                      ? 'text-zinc-800 text-sm font-medium border-b-2 border-green-900 pb-2'
+                      : 'text-neutral-500 text-sm font-normal '
+                  }`}
+                >
+                  {d?.name}
+                </div>
+              </div>
+            ))}
           </div>
-        )}
+          {scrollIcon.right && (
+            <div
+              className="text-green-400 rounded-full w-50 h-50 bg-green-200 hover:bg-green-400 cursor-pointer z-50"
+              onClick={() => scrollTo(+SCROLLER_VALUE)}
+            >
+              <ChevronRight size={32} />
+            </div>
+          )}
+        </div>
+        <div className="mt-8 md:mt-0">
+          <FilterDropdown
+            filterValues={filterValues}
+            setFilterValues={setFilterValues}
+            bookCondition={bookCondition}
+            setBookCondition={setBookCondition}
+          />
+        </div>
       </div>
-      <BookCollection selectedCategory={selectedCategory} />
+      <BookCollection
+        selectedCategory={selectedCategory}
+        filterValues={filterValues}
+        setFilterValues={setFilterValues}
+        bookCondition={bookCondition}
+        setBookCondition={setBookCondition}
+      />
     </div>
   )
 }

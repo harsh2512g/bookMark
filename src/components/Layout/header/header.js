@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux'
 import { setBooks } from '@/redux/authSlice'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/authContext'
-import { ShoppingCartSimple } from '@phosphor-icons/react'
+import { MagnifyingGlass, ShoppingCartSimple } from '@phosphor-icons/react'
 const navigation = [
   { name: 'How it Works', href: '/about' },
   { name: 'Marketplace', href: '/marketplace' },
@@ -21,7 +21,9 @@ const navigation = [
 
 export function Header() {
   const router = useRouter()
+  const [searchText, setSearchText] = useState()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [homePage, setHomePage] = useState(true)
   const dispatch = useDispatch()
   const { user } = useAuth()
   useEffect(() => {
@@ -32,6 +34,29 @@ export function Header() {
     }
     fetchBooks()
   }, [])
+  useEffect(() => {
+    const currentURL = window.location.href
+
+    // Get the main URL without any path or query parameters
+    const mainURL = window.location.origin
+    console.log({ currentURL, mainURL })
+    // Check if the current URL is the home page
+    if (currentURL === mainURL || currentURL === mainURL + '/') {
+      console.log(
+        'This is the home page with no extra path or query parameters.',
+      )
+      setHomePage(true)
+    } else {
+      console.log(
+        'This is not the home page or has extra path/query parameters.',
+      )
+      setHomePage(false)
+    }
+  })
+
+  const onSearch = () => {
+    router.push(`/alltextbooks?items=${searchText}`)
+  }
   return (
     <header className="bg-white fixed top-0 right-0 left-0 z-[100] bg-transparent'}">
       <nav
@@ -71,24 +96,43 @@ export function Header() {
             />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-green-700 text-lg font-bold"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
+        {homePage ? (
+          <>
+            <div className="hidden lg:flex lg:gap-x-12">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-green-700 text-lg font-bold"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="shadow-lg hidden md:flex items-center justify-between mx-auto rounded-full bg-white w-[326px] mt-4 px-11 py-1">
+            <div className="">
+              <input
+                // id={label}
+                placeholder="Search for Textbooks"
+                className="  px-4 py-2 w-[180px] outline-none text-neutral-500 text-sm font-normal"
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </div>
+
+            <MagnifyingGlass size={26} color="green" onClick={onSearch} />
+          </div>
+        )}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
-          <Link
-            href="/uploadBook"
-            className="text-green-700 text-lg font-bold mr-5"
-          >
-            Sell Textbooks
-          </Link>
+          {homePage && (
+            <Link
+              href="/uploadBook"
+              className="text-green-700 text-lg font-bold mr-5"
+            >
+              Sell Textbooks
+            </Link>
+          )}
           <Link
             href="/cart"
             className="text-sm font-semibold leading-6 mx-3 text-white mr-5"

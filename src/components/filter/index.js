@@ -21,7 +21,7 @@ function FilterDropdown({
     <div className="relative">
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer mt-11 w-[109px] h-11 p-2.5 bg-neutral-50 rounded-[10px] border border-stone-300 justify-start items-center gap-2.5 inline-flex"
+        className="cursor-pointer w-[109px] h-11 p-2.5 bg-neutral-50 rounded-[10px] border border-stone-300 justify-start items-center gap-2.5 inline-flex"
       >
         <Image
           src="./filter.svg"

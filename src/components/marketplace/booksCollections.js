@@ -46,7 +46,13 @@ import { v4 as uuidv4 } from 'uuid'
 //     description: '100+ listings from $10 and up',
 //   },
 // ]
-const BookCollection = ({ selectedCategory }) => {
+const BookCollection = ({
+  selectedCategory,
+  filterValues,
+  setFilterValues,
+  bookCondition,
+  setBookCondition,
+}) => {
   const [books, setBooks] = useState()
   const [loading, setLoading] = useState(false)
   const [bookMarks, setBookMarks] = useState()
@@ -57,11 +63,16 @@ const BookCollection = ({ selectedCategory }) => {
       setLoading(true)
       let data = await firebaseGetAllDoc('books')
       const data1 = data?.filter((d) => d?.category === selectedCategory)
-      setBooks(data1)
+      const updData = data1.filter(
+        (book) =>
+          parseInt(book?.price) <= filterValues?.range &&
+          bookCondition.includes(book?.bookCondition),
+      )
+      setBooks(updData)
       setLoading(false)
     }
     fetchBooks()
-  }, [selectedCategory])
+  }, [selectedCategory, filterValues, bookCondition])
 
   const addToBookMark = async (d) => {
     setLoading(true)
@@ -94,7 +105,7 @@ const BookCollection = ({ selectedCategory }) => {
 
     fetchuserData()
   }, [])
-  console.log({ books, bookMarks })
+  console.log({ books, bookMarks,bookCondition })
   return (
     <>
       {loading && (

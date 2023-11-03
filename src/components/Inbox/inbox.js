@@ -1,19 +1,46 @@
 'use client'
 import db from '@/firebase/firebaseDB'
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
+import { addDoc, collection, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import ChatRoom from './chatRoom'
 import ChatRoomList from './chatList'
 import OrderDetails from './orderDetails'
+import { firebaseGetDoc } from '@/firebase/utils'
 
 const Inbox = () => {
   const sellerId = Cookies.get('bookMarkUid')
-  const buyerId = 'BLavfNgvPpbHjiSkdFBJUmhqEjX2'
 
   const [bookInfo, setBookInfo] = useState()
   const [conversationId, setConversationId] = useState()
   const [selectedChatBookInfo, setSelectedChatBookInfo] = useState()
+
+  useEffect(() => {
+    if (sellerId) {
+      const conversationsRef = collection(db, 'conversations')
+      const q = query(
+        conversationsRef,
+        where('participants', 'array-contains', sellerId),
+      )
+
+      const unsubscribe = onSnapshot(q, async (snapshot) => {
+        const data = snapshot.docs.map(async (doc) => {
+          const docId = doc?.id
+          const docData = doc.data()
+          const orderData = await firebaseGetDoc('orders', docData?.orderId)
+          const bookData = await firebaseGetDoc('books', orderData?.bookId)
+          const userData = await firebaseGetDoc('users', bookData?.user_id)
+          console.log({ orderData, bookData, userData })
+          return { bookData, userData, docId }
+        })
+        const resolvedData = await Promise.all(data)
+        setBookInfo(resolvedData)
+        // setConversations(data)
+      })
+
+      return () => unsubscribe()
+    }
+  }, [sellerId])
 
   useEffect(() => {
     const data = bookInfo?.filter((d) => d?.docId === conversationId)
@@ -25,37 +52,42 @@ const Inbox = () => {
   console.log({ conversationId, selectedChatBookInfo, bookInfo })
   return (
     <div className="min-h-[calc(100vh-490px)] p-5 md:p-10 max-w-7xl py-10 sm:py-28 lg:py-30  mt-[18%] lg:mt-[9%] xl:mt-[6%] w-full mx-auto">
-      <div class="grid md:grid-cols-5 lg:grid-cols-7 gap-4 ">
-        <div class="col-span-2  ">
-          <p>Messages</p>
-          <div className="border border-stone-300 rounded-lg">
-            <ChatRoomList
-              userId={sellerId}
-              setConversationId={setConversationId}
-              conversationId={conversationId}
-              bookInfo={bookInfo}
-              setBookInfo={setBookInfo}
-            />
+      {!bookInfo ? (
+        <div className="text-lg font-bold text-center">No messages yet</div>
+      ) : (
+        <div class="grid md:grid-cols-5 lg:grid-cols-7 gap-4 ">
+          <div class="col-span-2  ">
+            <p>Messages</p>
+            <div className="border border-stone-300 rounded-lg">
+              <ChatRoomList
+                userId={sellerId}
+                setConversationId={setConversationId}
+                conversationId={conversationId}
+                bookInfo={bookInfo}
+                setBookInfo={setBookInfo}
+              />
+            </div>
           </div>
-        </div>
 
-        <div class="col-span-3 ">
-          <p>Conversation</p>
-          <div className="border border-stone-300 rounded-lg h-[600px] relative">
-            <ChatRoom
-              conversationId={conversationId}
-              userId={sellerId}
-              selectedChatBookInfo={selectedChatBookInfo}
-            />
+          <div class="col-span-3 ">
+            <p>Conversation</p>
+            <div className="border border-stone-300 rounded-lg h-[600px] relative">
+              <ChatRoom
+                conversationId={conversationId}
+                userId={sellerId}
+                selectedChatBookInfo={selectedChatBookInfo}
+              />
+            </div>
+          </div>
+          <div class="md:col-span-5 lg:col-span-2  ">
+            <p>Order Details</p>
+            <div className="border border-stone-300 rounded-lg ">
+              <OrderDetails selectedBookInfo={selectedChatBookInfo} />
+            </div>
           </div>
         </div>
-        <div class="md:col-span-5 lg:col-span-2  ">
-          <p>Order Details</p>
-          <div className="border border-stone-300 rounded-lg ">
-            <OrderDetails selectedBookInfo={selectedChatBookInfo} />
-          </div>
-        </div>
-      </div>
+      )}
+
       {/* <div className="border border-stone-300 rounded-xl p-6">
         <ChatRoomList
           userId={sellerId}

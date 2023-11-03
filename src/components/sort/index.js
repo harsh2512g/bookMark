@@ -7,12 +7,31 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+const sortOptions = [
+  {
+    name: 'Price: low to high',
+    href: '#',
+  },
+  {
+    name: 'Avg. Seller Rating',
+    href: '#',
+  },
+  {
+    name: 'Best Condition First',
+    href: '#',
+  },
+  {
+    name: 'Proximity to my location',
+    href: '#',
+  },
+]
+
 export default function SortDropdown() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5  px-3 py-2 text-sm font-semibold text-gray-900  ">
-          <div className=" justify-center mt-11 w-[109px] h-11 p-2 bg-neutral-50 rounded-[10px] border border-stone-300 items-center gap-2.5 inline-flex">
+        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5  px-3  text-sm font-semibold text-gray-900  ">
+          <div className=" justify-center w-[109px] h-11 p-2 bg-neutral-50 rounded-[10px] border border-stone-300 items-center gap-2.5 inline-flex">
             <div className="text-zinc-800 text-lg font-medium ">Sort</div>
             <Image
               src="./sort.svg"
@@ -34,63 +53,25 @@ export default function SortDropdown() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-xl p-4 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-72 origin-top-right rounded-[35px] p-6 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm',
-                  )}
-                >
-                  Log in
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm',
-                  )}
-                >
-                  Sign up
-                </a>
-              )}
-            </Menu.Item>
-            <br />
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm',
-                  )}
-                >
-                  Sell your textbooks
-                </a>
-              )}
-            </Menu.Item>
-            <form method="POST" action="#">
+            {sortOptions.map((d) => (
               <Menu.Item>
                 {({ active }) => (
-                  <button
-                    type="submit"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block w-full px-4 py-2 text-left text-sm',
-                    )}
-                  >
-                    Help Center
-                  </button>
+                  <>
+                    <a
+                      href={d?.href}
+                      className={classNames(
+                        ' text-zinc-800 text-lg font-normal block px-4 py-2  ',
+                      )}
+                    >
+                      {d?.name}
+                    </a>
+                    <div className='w-52 border border-stone-300 h-0 mx-auto mt-3 mb-3'></div>
+                  </>
                 )}
               </Menu.Item>
-            </form>
+            ))}
           </div>
         </Menu.Items>
       </Transition>

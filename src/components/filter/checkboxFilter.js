@@ -14,12 +14,10 @@ const checkboxLabels = [
 ]
 
 function CheckboxFilter({
-  filterValues,
-  setFilterValues,
   bookCondition,
   setBookCondition,
 }) {
-  console.log(filterValues, 'filter humain')
+
 
   const handleChecks = (e, label) => {
     if (e.target.checked) {
@@ -45,6 +43,7 @@ function CheckboxFilter({
             onChange={(e) => {
               handleChecks(e, d)
             }}
+            checked={bookCondition.includes(d.name)} 
           />
           <label htmlFor={i} className=" text-zinc-800 text-sm font-normal">
             {d?.name}

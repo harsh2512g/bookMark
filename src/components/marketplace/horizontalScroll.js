@@ -42,7 +42,7 @@ export default function HorizontalScroll({ children }) {
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ">
       <div
         className="text-green-400  w-50 h-50 bg-green-200  right-0 hover:bg-green-400 cursor-pointer z-50"
         onClick={() => handleScroll('left')}

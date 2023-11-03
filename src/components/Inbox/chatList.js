@@ -13,38 +13,9 @@ function ChatRoomList({
   bookInfo,
   setBookInfo,
 }) {
-  const [conversations, setConversations] = useState([])
 
-  const router = useRouter()
 
-  useEffect(() => {
-    if (userId) {
-      const conversationsRef = collection(db, 'conversations')
-      const q = query(
-        conversationsRef,
-        where('participants', 'array-contains', userId),
-      )
-
-      const unsubscribe = onSnapshot(q, async (snapshot) => {
-        const data = snapshot.docs.map(async (doc) => {
-          const docId = doc?.id
-          const docData = doc.data()
-          const orderData = await firebaseGetDoc('orders', docData?.orderId)
-          const bookData = await firebaseGetDoc('books', orderData?.bookId)
-          const userData = await firebaseGetDoc('users', bookData?.user_id)
-          console.log({ orderData, bookData, userData })
-          return { bookData, userData, docId }
-        })
-        const resolvedData = await Promise.all(data)
-        setBookInfo(resolvedData)
-        // setConversations(data)
-      })
-
-      return () => unsubscribe()
-    }
-  }, [userId])
-
-  console.log({ conversations, bookInfo, userId })
+  console.log({  bookInfo, userId })
   return (
     <div className="p-4">
       {/* {conversations.map((convo) => (
