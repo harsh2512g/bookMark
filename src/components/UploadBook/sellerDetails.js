@@ -2,37 +2,29 @@ import { setBookInfo } from '@/redux/authSlice'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const SellerDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
+const SellerDetails = ({
+  setActiveIndex,
+  activeIndex,
+  errors,
+  handleSubmit,
+  register,
+  onSubmit,
+}) => {
   const dispatch = useDispatch()
-  const data = useSelector((state) => state?.bookInfo)
-  const [city, setCity] = useState(data?.city)
-  const [state, setState] = useState(data.state)
-
-  const checkingErrors = () => {
-    if (!city) {
-      setErrors({ ...errors, city: true })
-      return true
-    }
-    if (!state) {
-      setErrors({ ...errors, state: true })
-      return true
-    }
-
-    return false
-  }
+  // const data = useSelector((state) => state?.bookInfo)
+  // const [city, setCity] = useState(data?.city)
+  // const [state, setState] = useState(data.state)
 
   const onNext = () => {
-    const error = checkingErrors()
-    if (!error) {
-      dispatch(setBookInfo({ ...data, city, state }))
-      setActiveIndex(3)
-    }
+    // const error = checkingErrors()
+    // if (!error) {
+    //   dispatch(setBookInfo({ ...data, city, state }))
+    //   setActiveIndex(3)
+    // }
   }
 
-  console.log({ data }, 'onSeller')
-
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="  grow shrink basis-0 justify-start  gap-10 flex flex-col md:flex-row">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
           <div className="detail">
@@ -40,47 +32,31 @@ const SellerDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
               City
             </p>
             <input
-              id="orgName"
-              name="orgName"
-              type="orgName"
-              autoComplete="orgName"
+              {...register('city')}
+              id="city"
+              name="city"
+              type="text"
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => {
-                setCity(e.target.value)
-                setErrors({ ...errors, city: false })
-              }}
-                defaultValue={data?.city}
+              //defaultValue={data?.city}
             />
-            {errors?.city && (
-              <p className="text-sm text-red-600">Please fill this field</p>
-            )}
           </div>
           <div className="detail">
             <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
               State
             </p>
             <input
-              id="orgName"
-              name="orgName"
-              type="orgName"
-              autoComplete="orgName"
+              {...register('state')}
+              id="state"
+              name="state"
+              type="text"
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => {
-                setState(e.target.value)
-                setErrors({ ...errors, state: false })
-              }}
-                defaultValue={data?.state}
+              //defaultValue={data?.state}
             />
-            {errors?.state && (
-              <p className="text-sm text-red-600">Please fill this field</p>
-            )}
           </div>
-
-          {/* Add other details as needed */}
         </div>
       </div>
       {activeIndex == 2 && (
@@ -93,17 +69,18 @@ const SellerDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
               <div>Back</div>
             </div>
           </div>
-          <div
-            onClick={onNext}
+          <button
+            type="submit"
+            //onClick={onNext}
             className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
           >
             <div className={`text-white text-lg font-bold flex items-center`}>
               <div>Next</div>
             </div>
-          </div>
+          </button>
         </div>
       )}
-    </>
+    </form>
   )
 }
 

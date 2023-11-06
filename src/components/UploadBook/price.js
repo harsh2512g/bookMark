@@ -2,7 +2,14 @@ import { setBookInfo } from '@/redux/authSlice'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const Price = ({ setActiveIndex, activeIndex,errors,setErrors }) => {
+const Price = ({
+  setActiveIndex,
+  activeIndex,
+  errors,
+  handleSubmit,
+  register,
+  onSubmit,
+}) => {
   const dispatch = useDispatch()
   const data = useSelector((state) => state?.bookInfo)
 
@@ -10,8 +17,8 @@ const Price = ({ setActiveIndex, activeIndex,errors,setErrors }) => {
 
   const onNext = () => {
     if (!price) {
-      setErrors({...errors,price:true})
-      return;
+      //setErrors({...errors,price:true})
+      return
     } else {
       dispatch(setBookInfo({ ...data, price }))
       setActiveIndex(2)
@@ -19,7 +26,7 @@ const Price = ({ setActiveIndex, activeIndex,errors,setErrors }) => {
   }
 
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="  grow shrink basis-0 justify-start  gap-10 flex flex-col md:flex-row">
         <div className="w-full">
           <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
@@ -31,14 +38,13 @@ const Price = ({ setActiveIndex, activeIndex,errors,setErrors }) => {
             represents the value and condition of the textbook.:
           </p>
           <input
-            id="orgName"
-            name="orgName"
+            {...register('price')}
+            id="price"
+            name="price"
             type="number"
-            autoComplete="orgName"
             placeholder="Price"
             required
             className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-            onChange={(e) => {setPrice(e.target.value); setErrors({...errors,price:false})}}
             defaultValue={data?.price}
           />
           <p className="text-zinc-800 text-sm font-normal py-4 ">
@@ -61,17 +67,18 @@ const Price = ({ setActiveIndex, activeIndex,errors,setErrors }) => {
               <div>Back</div>
             </div>
           </div>
-          <div
-            onClick={onNext}
+          <button
+            type="submit"
+            //onClick={onNext}
             className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
           >
             <div className={`text-white text-lg font-bold flex items-center`}>
               <div>Next</div>
             </div>
-          </div>
+          </button>
         </div>
       )}
-    </div>
+    </form>
   )
 }
 

@@ -7,6 +7,7 @@ import { setBookInfo } from '@/redux/authSlice'
 import ImageUploader from './imageUploader'
 import { uploadImages } from '@/firebase/utils'
 import Cookies from 'js-cookie'
+import { Controller } from 'react-hook-form'
 
 const bookConditionDropDownOptions = [
   'Brand New',
@@ -25,84 +26,39 @@ const categoryOptions = [
   'Art',
 ]
 
-const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
-  // const { uid } = useUidContext()
+const BookDetails = ({
+  setActiveIndex,
+  activeIndex,
+  errors,
+  formDetails,
+  setFormDetails,
+  handleSubmit,
+  register,
+  onSubmit,
+  getValues,
+  setValue,
+  control,
+}) => {
+  const values = getValues()
+  console.log({ values })
   const uid = Cookies.get('bookMarkUid')
   const dispatch = useDispatch()
   const data = useSelector((state) => state?.bookInfo)
-  const [selectedOption, setSelectedOption] = useState(data?.selectedOption)
-  const [category, setCategory] = useState(data?.category)
+  const [selectedOption, setSelectedOption] = useState(values?.bookCondition)
+  const [category, setCategory] = useState(values?.category)
   const [uploadedImages, setUploadedImages] = useState(
-    data?.uploadedImages ? data?.uploadedImages : [],
+    values?.images ? values?.images : [],
   )
   const [files, setFiles] = useState([])
+  console.log({ values })
 
-  const [formDetails, setFormDetails] = useState({
-    id: uuidv4(),
-    title: data?.title,
-    user_id: uid,
-    author: data?.author,
-    isbn: data?.isbn,
-    edition: data?.edition,
-    notes: data?.notes,
-    created_at: new Date(),
-    updated_at: new Date(),
-  })
-
-  const checkingErrors = () => {
-    if (!formDetails?.title) {
-      setErrors({ ...errors, title: true })
-      return true
-    }
-
-    if (!formDetails?.author) {
-      setErrors({ ...errors, author: true })
-      return true
-    }
-    if (!formDetails?.isbn) {
-      setErrors({ ...errors, isbn: true })
-      return true
-    }
-    if (!formDetails?.edition) {
-      setErrors({ ...errors, edition: true })
-      return true
-    }
-    if (!selectedOption) {
-      setErrors({ ...errors, bookCondition: true })
-      return true
-    }
-    if (!formDetails?.notes) {
-      setErrors({ ...errors, notes: true })
-      return true
-    }
-    if (!category) {
-      setErrors({ ...errors, category: true })
-      return true
-    }
-
-    return false
-  }
-  console.log({ selectedOption, errors })
-  const onSave = async () => {
-    const error = checkingErrors()
-    if (!error) {
-      setActiveIndex(1)
-      console.log({ formDetails })
-      dispatch(
-        setBookInfo({
-          ...formDetails,
-          bookCondition:selectedOption,
-          uploadedImages,
-          category,
-        }),
-      )
-    }
-    //   const data = await firebaseAddBookDetails(formDetails, formDetails?.id)
-  }
-  console.log({ files })
   const handleUpload = (image, file) => {
     setUploadedImages((prev) => [...prev, { image, file }])
   }
+
+  useEffect(() => {
+    setValue('images', uploadedImages)
+  }, [uploadedImages])
 
   const handleRemoveImage = (index) => {
     const newImages = [...uploadedImages]
@@ -110,14 +66,6 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
     setUploadedImages(newImages)
   }
 
-  useEffect(() => {
-    setErrors({ ...errors, bookCondition: false })
-  }, [selectedOption])
-
-  useEffect(() => {
-    setErrors({ ...errors, category: false })
-  }, [category])
-  console.log({ uploadedImages }, 'redux Data')
   return (
     <div className="  grow shrink basis-0 justify-start  flex flex-col md:flex-row">
       <div className="flex-2">
@@ -143,62 +91,60 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
                 onUpload={handleUpload}
                 setFiles={setFiles}
                 files={files}
+                setValue={setValue}
               />
             )}
           </div>
         </div>
       </div>
 
-      <div className=" flex-3 grow shrink basis-0 flex-col justify-start items-start gap-3 inline-flex">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className=" flex-3 grow shrink basis-0 flex-col justify-start items-start gap-3 inline-flex"
+      >
         <div className="w-full">
           <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
             Textbook Title
           </p>
-          <input
-            id="orgName"
-            name="orgName"
-            type="orgName"
-            autoComplete="orgName"
-            placeholder="Book Title"
-            required
-            className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-            onChange={(e) => {
-              setFormDetails((prev) => ({
-                ...prev,
-                title: e.target.value,
-              }))
-              setErrors({ ...errors, title: false })
-            }}
-            defaultValue={data?.title}
+          <Controller
+            name="title"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                id="title"
+                name="title"
+                type="text"
+                placeholder="Book Title"
+                required
+                className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
+                //defaultValue={data?.title}
+                onChange={(e) => {
+                  // Log the current value
+                  console.log(e.target.value, 'hjhjhj')
+                  // Call the field.onChange to ensure the form is updated
+                  field.onChange(e)
+                  setValue('title', e.target.value)
+                  console.log(e.target.value, 'hjhjhj after')
+                }}
+              />
+            )}
           />
-          {errors?.title && (
-            <p className="text-sm text-red-600">Please fill this field</p>
-          )}
         </div>
         <div className="w-full">
           <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
             Author
           </p>
           <input
-            id="orgName"
-            name="orgName"
-            type="orgName"
-            autoComplete="orgName"
+            {...register('author')}
+            id="author"
+            name="author"
+            type="text"
             placeholder="Author"
             required
             className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-            onChange={(e) => {
-              setFormDetails((prev) => ({
-                ...prev,
-                author: e.target.value,
-              }))
-              setErrors({ ...errors, author: false })
-            }}
             defaultValue={data?.author}
           />
-          {errors?.author && (
-            <p className="text-sm text-red-600">Please fill this field</p>
-          )}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
           <div className="detail">
@@ -206,65 +152,43 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
               ISBN
             </p>
             <input
-              id="orgName"
-              name="orgName"
-              type="orgName"
-              autoComplete="orgName"
+              {...register('isbn')}
+              id="isbn"
+              name="isbn"
+              type="number"
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => {
-                setFormDetails((prev) => ({
-                  ...prev,
-                  isbn: e.target.value,
-                }))
-
-                setErrors({ ...errors, isbn: false })
-              }}
               defaultValue={data?.isbn}
             />
-            {errors?.isbn && (
-              <p className="text-sm text-red-600">Please fill this field</p>
-            )}
           </div>
           <div className="detail">
             <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
               Edition
             </p>
             <input
-              id="orgName"
-              name="orgName"
-              type="orgName"
-              autoComplete="orgName"
+              {...register('edition')}
+              id="edition"
+              name="edition"
+              type="text"
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => {
-                setFormDetails((prev) => ({
-                  ...prev,
-                  edition: e.target.value,
-                }))
-                setErrors({ ...errors, edition: false })
-              }}
               defaultValue={data?.edition}
             />
-            {errors?.edition && (
-              <p className="text-sm text-red-600">Please fill this field</p>
-            )}
           </div>
-
-          {/* Add other details as needed */}
         </div>
         <div className="detail w-full">
           <p className="text-zinc-800 text-sm font-medium ml-1 mb-2 mt-5">
             Book Condition
           </p>
           <CustomDropdown
+            text="bookCondition"
             options={bookConditionDropDownOptions}
-            selectedOption={
-              data?.selectedOption ? data?.selectedOption : selectedOption
-            }
+            selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            register={register}
+            setValue={setValue}
           />
           {errors?.bookCondition && (
             <p className="text-sm text-red-600">Please select </p>
@@ -281,26 +205,15 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
               was, can help increase your chances to sell.
             </p>
             <input
-              id="orgName"
-              name="orgName"
-              type="orgName"
-              autoComplete="orgName"
+              {...register('notes')}
+              id="notes"
+              name="notes"
+              type="text"
               placeholder="Comments"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              onChange={(e) => {
-                setFormDetails((prev) => ({
-                  ...prev,
-                  notes: e.target.value,
-                }))
-
-                setErrors({ ...errors, notes: false })
-              }}
               defaultValue={data?.notes}
             />
-            {errors?.notes && (
-              <p className="text-sm text-red-600">Please fill this field</p>
-            )}
           </div>
         </div>
 
@@ -309,9 +222,12 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
             Category
           </p>
           <CustomDropdown
+            text="category"
             options={categoryOptions}
-            selectedOption={data?.category ? data?.category : category}
+            selectedOption={category}
             setSelectedOption={setCategory}
+            register={register}
+            setValue={setValue}
           />
           {errors?.category && (
             <p className="text-sm text-red-600">Please select </p>
@@ -320,17 +236,18 @@ const BookDetails = ({ setActiveIndex, activeIndex, errors, setErrors }) => {
 
         {activeIndex == 0 && (
           <div className="flex justify-end w-full">
-            <div
-              onClick={onSave}
+            <button
+              //onClick={onSave}
+              type="submit"
               className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
             >
               <div className={`text-white text-lg font-bold flex items-center`}>
                 <div>Next</div>
               </div>
-            </div>
+            </button>
           </div>
         )}
-      </div>
+      </form>
     </div>
   )
 }

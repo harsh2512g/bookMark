@@ -41,7 +41,7 @@ const AllTextBooks = () => {
     const result = searchBooks()
     setCollection(result)
     console.log({ result })
-  }, [books, filterValues,bookCondition])
+  }, [books, filterValues,bookCondition,items])
   return (
     <div className=" p-10 max-w-7xl mt-24 bg-center bg-no-repeat w-full mx-auto">
       <div className=" text-zinc-900 text-3xl font-bold">

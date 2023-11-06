@@ -52,12 +52,12 @@ const rightMarquee2 = [
 
 const VerticalMarquees = () => {
   return (
-    <div class="mx-auto max-w-7xl px-6  bg-[#E5F0EA]  lg:h-[600px] overflow-hidden">
+    <div class="mx-auto max-w-7xl bg-[#E5F0EA]  lg:h-[600px] overflow-hidden">
       <ul
         role="list"
         class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
       >
-        <li class="flex">
+        <li class="flex justify-self-start">
           <marquee width="60%" direction="up" class="h-full">
             {leftMarquee1.map((d) => (
               <div className="rounded-lg m-4">

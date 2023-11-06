@@ -97,6 +97,7 @@ const firebaseAddDoc = async (data) => {
 }
 
 export async function firebaseAddBookDetails(data, id) {
+  console.log({ data, id })
   try {
     const res = await setDoc(doc(firestore, 'books', `${id}`), data)
     return true
@@ -135,8 +136,8 @@ export async function firebaseLoginWithGoogle() {
           emailVerified: user?.emailVerified,
           providerUserInfo: user?.providerData,
           photoURL: user?.photoURL,
-          cart:[],
-          bookMark:[]
+          cart: [],
+          bookMark: [],
         }
         console.log({ updatedUserData })
         await firebaseAddDoc(updatedUserData)

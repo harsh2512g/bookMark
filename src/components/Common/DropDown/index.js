@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
 
-function CustomDropdown({ options, selectedOption, setSelectedOption }) {
+function CustomDropdown({
+  text,
+  options,
+  selectedOption,
+  setSelectedOption,
+  register,
+  setValue,
+}) {
   const [showDropdown, setShowDropdown] = useState(false)
 
   const handleOptionClick = (option) => {
+    console.log({ option })
     setSelectedOption(option)
     setShowDropdown(false) // Close the dropdown after selecting an option (you can adjust this behavior)
+    // register(text, { value: option, required: true })
+    setValue(text, option)
   }
 
   return (

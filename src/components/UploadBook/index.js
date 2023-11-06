@@ -13,6 +13,8 @@ import SellerDetails from './sellerDetails'
 import ListingSuccessfully from './listingSuccessfully'
 import { useSelector } from 'react-redux'
 import { uploadImages } from '@/firebase/utils'
+import { useForm, Controller } from 'react-hook-form'
+import Cookies from 'js-cookie'
 
 const bookConditionDropDownOptions = [
   'Brand New',
@@ -23,53 +25,141 @@ const bookConditionDropDownOptions = [
   'Include listings outside of my campus',
 ]
 
+const tabs = [
+  {
+    name: 'Book Details',
+    activeTabIndex: 0,
+  },
+  {
+    name: 'Pricing',
+    activeTabIndex: 1,
+  },
+  {
+    name: 'Seller Details',
+    activeTabIndex: 2,
+  },
+  {
+    name: 'Review',
+    activeTabIndex: 3,
+  },
+]
 export default function UploadBook() {
-  const data = useSelector((state) => state?.bookInfo)
-
-  const { uid } = useUidContext()
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [errors, setErrors] = useState({
-    title: false,
-    user_id: false,
-    author: false,
-    isbn: false,
-    edition: false,
-    notes: false,
-    bookCondition: false,
-    price: false,
-    city: false,
-    state: false,
-    category: false,
+  const {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: '',
+      author: '',
+      isbn: '',
+      edition: '',
+      bookCondition: null,
+      notes: '',
+      category: null,
+      price: '',
+      city: '',
+      state: '',
+    },
   })
-  const onSave = async () => {
-    const urls = await uploadImages(data?.uploadedImages)
-    if (data) {
-      const { uploadedImages, ...otherData } = data
-      const updatedData = {
-        ...otherData,
-        urls
-      };
-      const data1 = await firebaseAddBookDetails(updatedData, data?.id)
+  const data = useSelector((state) => state?.bookInfo)
+  const values = getValues()
+  const uid = Cookies.get('bookMarkUid')
+  const [activeIndex, setActiveIndex] = useState(0)
+  // const [errors, setErrors] = useState({
+  //   title: false,
+  //   user_id: false,
+  //   author: false,
+  //   isbn: false,
+  //   edition: false,
+  //   notes: false,
+  //   bookCondition: false,
+  //   price: false,
+  //   city: false,
+  //   state: false,
+  //   category: false,
+  // })
+  const [formDetails, setFormDetails] = useState({
+    id: uuidv4(),
+    title: data?.title,
+    user_id: uid,
+    author: data?.author,
+    isbn: data?.isbn,
+    edition: data?.edition,
+    notes: data?.notes,
+    created_at: new Date(),
+    updated_at: new Date(),
+  })
 
-      if (data1) {
-        setActiveIndex(4)
-      }
-    }
+  const onSubmit = async (data) => {
+    //const urls = await uploadImages(data?.images)
+
+    console.log({ data })
+    // if (activeIndex === 4) {
+    //   if (values) {
+    //     const { images, ...otherData } = data
+    //     const updatedData = {
+    //       ...otherData,
+
+    //       id: uuidv4(),
+    //       user_id: uid,
+    //       created_at: new Date(),
+    //       updated_at: new Date(),
+    //     }
+    //     console.log({ updatedData })
+    //     //const data1 = await firebaseAddBookDetails(updatedData, updatedData?.id)
+
+    //     // if (data1) {
+    //     //   setActiveIndex(4)
+    //     // }
+    //   }
+    // }
+    setActiveIndex(activeIndex + 1)
+    console.log({ activeIndex })
+  }
+
+  const onSave = async (values) => {
+    console.log('hum chlenge')
+    console.log({ values })
   }
 
   if (data) {
     const { uploadedImages, ...otherData } = data
-    console.log({ otherData }, 'harsh')
   }
-
+  console.log({ formDetails, activeIndex })
   return (
-    <div className="  max-w-7xl   mt-[-9%] xl:mt-[10%] bg-center bg-no-repeat w-full mx-auto">
+    <div className="  max-w-7xl bg-center bg-no-repeat w-full mx-auto">
+      <div className="text-zinc-900 text-3xl font-bold">
+        Create your listing
+      </div>
+      <div className="flex  p-4">
+        {tabs.map((d) => {
+          return (
+            d?.activeTabIndex <= activeIndex && (
+              <div className="">
+                <p>{d?.name}</p>
+              </div>
+            )
+          )
+        })}
+      </div>
       {(activeIndex === 0 || activeIndex === 3) && (
         <BookDetails
           setActiveIndex={setActiveIndex}
           activeIndex={activeIndex}
           errors={errors}
-          setErrors={setErrors}
+          formDetail={formDetails}
+          setFormDetails={setFormDetails}
+          handleSubmit={handleSubmit}
+          register={register}
+          onSubmit={onSubmit}
+          getValues={getValues}
+          setValue={setValue}
+          control={control}
         />
       )}
       {(activeIndex === 1 || activeIndex === 3) && (
@@ -77,7 +167,10 @@ export default function UploadBook() {
           setActiveIndex={setActiveIndex}
           activeIndex={activeIndex}
           errors={errors}
-          setErrors={setErrors}
+          handleSubmit={handleSubmit}
+          register={register}
+          onSubmit={onSubmit}
+          // setErrors={setErrors}
         />
       )}
       {(activeIndex === 2 || activeIndex === 3) && (
@@ -85,7 +178,10 @@ export default function UploadBook() {
           setActiveIndex={setActiveIndex}
           activeIndex={activeIndex}
           errors={errors}
-          setErrors={setErrors}
+          handleSubmit={handleSubmit}
+          register={register}
+          onSubmit={onSubmit}
+          //setErrors={setErrors}
         />
       )}
       {activeIndex == 3 && (
@@ -99,7 +195,7 @@ export default function UploadBook() {
             </div>
           </div>
           <div
-            onClick={onSave}
+            onClick={() => onSave(values)}
             className={` bg-green-700 mt-4 cursor-pointer w-[160px] h-[40px] px-7 py-3 rounded-xl justify-center items-center gap-2.5 inline-flex`}
           >
             <div className={`text-white text-lg font-bold flex items-center`}>

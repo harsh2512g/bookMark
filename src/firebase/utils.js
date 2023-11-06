@@ -198,7 +198,7 @@ export async function firebaseGetAllDoc(collectionName) {
 export async function uploadImages(files) {
   console.log({ files })
 
-  const uploadPromises = files.map((file) => {
+  const uploadPromises = files?.map((file) => {
     const storage = getStorage(firebase)
     const storageRef = ref(storage, 'books/' + file?.file?.name)
     return uploadBytes(storageRef, file?.file).then((snapshot) =>

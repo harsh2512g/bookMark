@@ -57,6 +57,13 @@ export function Header() {
   const onSearch = () => {
     router.push(`/alltextbooks?items=${searchText}`)
   }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onSearch()
+    }
+  }
+
   return (
     <header className="bg-white fixed top-0 right-0 left-0 z-[100] bg-transparent'}">
       <nav
@@ -118,10 +125,16 @@ export function Header() {
                 placeholder="Search for Textbooks"
                 className="  px-4 py-2 w-[180px] outline-none text-neutral-500 text-sm font-normal"
                 onChange={(e) => setSearchText(e.target.value)}
+                onKeyDown={handleKeyPress}
               />
             </div>
 
-            <MagnifyingGlass size={26} color="green" onClick={onSearch} />
+            <MagnifyingGlass
+              size={26}
+              color="green"
+              onClick={onSearch}
+              className="cursor-pointer"
+            />
           </div>
         )}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">

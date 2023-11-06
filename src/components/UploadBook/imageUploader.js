@@ -1,14 +1,14 @@
 import { Plus } from '@phosphor-icons/react'
 
-const ImageUploader = ({ onUpload, setFiles, files }) => {
+const ImageUploader = ({ onUpload, setFiles, files, setValue }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0]
-    setFiles(prev => [...prev, file])
+    setFiles((prev) => [...prev, file])
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
-        const uniqueFileName =  file.name; 
-        onUpload(reader.result,file)
+        const uniqueFileName = file.name
+        onUpload(reader.result, file)
       }
       reader.readAsDataURL(file)
     }
@@ -26,6 +26,8 @@ const ImageUploader = ({ onUpload, setFiles, files }) => {
       </div>
 
       <input
+        id="images"
+        name="images"
         type="file"
         accept="image/*"
         onChange={handleImageChange}
