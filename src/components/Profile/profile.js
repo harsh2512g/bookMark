@@ -48,7 +48,7 @@ const Profile = () => {
     }
     fetchBooks()
   }, [])
-
+console.log({uid,user})
   useEffect(() => {
     const fetchUser = async () => {
       const data = await firebaseGetDoc('users', uid)

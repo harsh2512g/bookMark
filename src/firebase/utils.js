@@ -38,6 +38,7 @@ export async function firebaseGetDoc(collectionName, id) {
   try {
     const docRef = doc(firestore, collectionName, id)
     const docSnap = await getDoc(docRef)
+    console.log({docRef,docSnap})
     if (docSnap.exists()) {
       return docSnap.data()
     } else {
@@ -158,7 +159,7 @@ export async function firebaseUpdateBookMarkDoc(
   }
 }
 
-export async function firebaseRemoveFromDoc(collectionName, id, updatedData) {
+export async function firebaseRemoveFromDoc(collectionName, id, updatedData,columnName) {
   try {
     // Get a reference to the specific document by its ID
     const docRef = doc(firestore, collectionName, id)
@@ -169,11 +170,12 @@ export async function firebaseRemoveFromDoc(collectionName, id, updatedData) {
       throw new Error('No document with the given ID found')
     }
 
-    console.log({ updatedData })
-
+    console.log({ updatedData,columnName,id })
     // Use the arrayRemove method to remove the updatedData from the cart_id array
-    const updateObj = {
+    const updateObj = columnName==="cart"? {
       cart: arrayRemove(updatedData),
+    }:{
+      bookMark:arrayRemove(updatedData)
     }
 
     // Update the document

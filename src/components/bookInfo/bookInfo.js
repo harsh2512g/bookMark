@@ -160,7 +160,7 @@ const BookInfo = ({ pathname }) => {
           <div className="mt-24 flex flex-col lg:flex-row justify-between">
             <div className="flex">
               <Image
-                src={bookData?.urls[0]}
+                src={bookData?.images[0]}
                 height={20}
                 width={340}
                 className=" mr-8 cursor-pointer"
@@ -171,7 +171,7 @@ const BookInfo = ({ pathname }) => {
                 // alt={`Uploaded ${index}`}
               />
               <div>
-                {bookData?.urls.map((image, index) => (
+                {bookData?.images.map((image, index) => (
                   <div
                     className={`${index !== 0 ? 'mb-4' : 'mb-0'}`}
                     onClick={() => {
@@ -194,28 +194,8 @@ const BookInfo = ({ pathname }) => {
                 ))}
               </div>
             </div>
-            <div className="mx-auto grid grid-cols-2 gap-4 mr-6">
-              {/* <Image
-                src="/bookImg.png"
-                height={10}
-                width={300}
-                className=" shadow-lg mb-3"
-                alt="Your Company"
-              /> */}
-
-              {/* {bookData?.urls?.map((image, index) => (
-                <div key={index} className="relative">
-                  <Image
-                    src={image}
-                    height={20}
-                    width={400}
-                    className="  "
-                    alt={`Uploaded ${index}`}
-                  />
-                </div>
-              ))} */}
-            </div>
-            <div className="flex flex-col md:flex-row mt-10 lg:mt-0 justify-between">
+           
+            <div className="flex flex-col pl-5 md:flex-row mt-10 lg:mt-0 justify-between">
               <div className="w-[340px] border-r-2 pr-8 border-[#C4C4C4]">
                 <div className="flex  justify-between mb-6">
                   <p className="text-zinc-800 font-bold">Book Condition:</p>
@@ -367,22 +347,22 @@ const BookInfo = ({ pathname }) => {
         )}
         {isOpen && (
           <Lightbox
-            mainSrc={bookData?.urls[photoIndex]}
-            nextSrc={bookData?.urls[(photoIndex + 1) % bookData?.urls.length]} // Wrapping around to the first image if at the end
+            mainSrc={bookData?.images[photoIndex]}
+            nextSrc={bookData?.images[(photoIndex + 1) % bookData?.images.length]} // Wrapping around to the first image if at the end
             prevSrc={
-              bookData?.urls[
-                (photoIndex + bookData?.urls.length - 1) % bookData?.urls.length
+              bookData?.images[
+                (photoIndex + bookData?.images.length - 1) % bookData?.images.length
               ]
             } // Wrapping around to the last image if at the start
             onCloseRequest={() => setIsOpen(false)}
             onMovePrevRequest={() =>
               setPhotoIndex(
-                (photoIndex + bookData?.urls.length - 1) %
-                  bookData?.urls.length,
+                (photoIndex + bookData?.images.length - 1) %
+                  bookData?.images.length,
               )
             }
             onMoveNextRequest={() =>
-              setPhotoIndex((photoIndex + 1) % bookData?.urls.length)
+              setPhotoIndex((photoIndex + 1) % bookData?.images.length)
             }
           />
         )}

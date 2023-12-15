@@ -8,22 +8,27 @@ import {
 } from '@/firebase/utils'
 import Cookies from 'js-cookie'
 
-const CartDashboard = ({ bookId, loading, setOnRemoveClick }) => {
+const CartDashboard = ({ bookId, loading,setLoading ,setOnRemoveClick}) => {
   const router = useRouter()
   const [data, setData] = useState()
+  
   const uid = Cookies.get('bookMarkUid')
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const d = await firebaseGetDoc('books', bookId)
       console.log({ d }, 'checking')
       setData(d)
+      setLoading(false)
     }
     fetchData()
   }, [])
   const onRemove = async () => {
-    const removeData = await firebaseRemoveFromDoc('users', uid, bookId)
-
-    setOnRemoveClick(true)
+    const removeData = await firebaseRemoveFromDoc('users', uid, bookId,"cart")
+    if(removeData){
+      setOnRemoveClick(true)
+    }
+    
   }
   console.log({ data })
   return (
@@ -32,17 +37,17 @@ const CartDashboard = ({ bookId, loading, setOnRemoveClick }) => {
 
       <>
         <div
-          className="cursor-pointer mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex"
-          onClick={() => router.push(`/marketplace/${data?.id}`)}
+          className=" mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex"
+         
         >
           <Image
-            src={data?.urls[0]}
+            src={data?.images[0]}
             height={10}
             width={120}
             className=" shadow-lg mb-3"
             alt="Your Company"
           />
-          <div className="w-[0px] sm:w-[200px] md:w-[350px] lg:w-[600px]  grow shrink basis-0 h-[117px] justify-start items-center gap-10 flex">
+          <div  onClick={() => router.push(`/marketplace/${data?.id}`)} className="cursor-pointer w-[0px] sm:w-[200px] md:w-[350px] lg:w-[600px]  grow shrink basis-0 h-[117px] justify-start items-center gap-10 flex">
             <div className=" grow shrink basis-0 flex-col justify-start items-start gap-3 inline-flex">
               <div className=" text-zinc-800 text-lg font-bold font-['DM Sans'] leading-[27px]">
                 {data?.title}

@@ -16,6 +16,7 @@ import { uploadImages } from '@/firebase/utils'
 import { useForm, Controller } from 'react-hook-form'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 const bookConditionDropDownOptions = [
   'Brand New',
@@ -67,6 +68,7 @@ export default function UploadBook() {
       state: '',
     },
   })
+  const router=useRouter();
   const data = useSelector((state) => state?.bookInfo)
   const values = getValues()
   const uid = Cookies.get('bookMarkUid')
@@ -74,19 +76,7 @@ export default function UploadBook() {
   const [uploadedImages, setUploadedImages] = useState(
     values?.images ? values?.images : [],
   )
-  // const [errors, setErrors] = useState({
-  //   title: false,
-  //   user_id: false,
-  //   author: false,
-  //   isbn: false,
-  //   edition: false,
-  //   notes: false,
-  //   bookCondition: false,
-  //   price: false,
-  //   city: false,
-  //   state: false,
-  //   category: false,
-  // })
+  
   const [formDetails, setFormDetails] = useState({
     id: uuidv4(),
     title: data?.title,
@@ -163,6 +153,7 @@ export default function UploadBook() {
             pauseOnHover: true,
             draggable: true,
           })
+          router.push("/marketplace")
         }
     }
   }

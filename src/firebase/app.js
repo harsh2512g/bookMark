@@ -11,14 +11,14 @@ import { getFirestore } from 'firebase/firestore'
 // const messagingSenderId = process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBTZDGUCWhamW-kx1kUOcWi3ss6OEeoQL8',
-  authDomain: 'kirana-3a648.firebaseapp.com',
-  projectId: 'kirana-3a648',
-  storageBucket: 'kirana-3a648.appspot.com',
-  messagingSenderId: '1054838536116',
-  appId: '1:1054838536116:web:e21e1d505851bb609f24e1',
-  measurementId: 'G-26FYYVH0WE',
-}
+  apiKey: "AIzaSyANYhVfVJt1zKbvqxniyPprxqKKRQ6Zf6I",
+  authDomain: "bookmark-cf8d1.firebaseapp.com",
+  projectId: "bookmark-cf8d1",
+  storageBucket: "bookmark-cf8d1.appspot.com",
+  messagingSenderId: "496654901093",
+  appId: "1:496654901093:web:fece1f4c3e06f059044b8c",
+  measurementId: "G-6FCT5RRET6"
+};
 
 export const firebase = initializeApp(firebaseConfig)
 export const auth = getAuth(firebase)

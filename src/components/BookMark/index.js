@@ -1,15 +1,17 @@
 'use client'
-import { firebaseGetDoc } from '@/firebase/utils'
+import { firebaseGetDoc, firebaseRemoveFromDoc } from '@/firebase/utils'
 import { Spinner } from 'flowbite-react'
 import Cookies from 'js-cookie'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Trash } from '@phosphor-icons/react'
 const BookMark = () => {
   const router = useRouter()
   const uid = Cookies.get('bookMarkUid')
   const [books, setBooks] = useState()
   const [loading, setLoading] = useState(false)
+  const [onRemoveBookMark,setOnRemoveBookmark]=useState(false)
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true)
@@ -27,10 +29,16 @@ const BookMark = () => {
       setLoading(false)
     }
     fetchUser()
-  }, [])
+  }, [onRemoveBookMark])
 
   console.log({ books })
-
+  const onRemove = async (bookId) => {
+    const removeData = await firebaseRemoveFromDoc('users', uid, bookId,"bookMark")
+    if(removeData){
+      setOnRemoveBookmark(true)
+    }
+    
+  }
   return (
     <>
       {loading ? (
@@ -45,18 +53,18 @@ const BookMark = () => {
               {books?.map((data) => {
                 return (
                   <div
-                    className="cursor-pointer mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex"
-                    onClick={() => router.push(`/marketplace/${data?.id}`)}
+                    className=" mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 inline-flex"
+                   
                   >
                     <Image
-                      src={data?.urls[0]}
+                      src={data?.images[0]}
                       height={10}
                       width={120}
                       className=" shadow-lg mb-3"
                       alt="Your Company"
                     />
-                    <div className="w-[0px] sm:w-[200px] md:w-[350px] lg:w-[600px]  grow shrink basis-0 h-[117px] justify-start items-center gap-10 flex">
-                      <div className=" grow shrink basis-0 flex-col justify-start items-start gap-3 inline-flex">
+                    <div className="w-[0px] sm:w-[200px] md:w-[350px] lg:w-[70vw]  grow shrink basis-0 h-[117px] justify-between items-center gap-10 flex">
+                      <div  onClick={() => router.push(`/marketplace/${data?.id}`)} className="cursor-pointer grow shrink basis-0 flex-col justify-start items-start gap-3 inline-flex">
                         <div className=" text-zinc-800 text-lg font-bold font-['DM Sans'] leading-[27px]">
                           {data?.title}
                         </div>
@@ -76,6 +84,7 @@ const BookMark = () => {
                           ${data?.price}
                         </div>
                       </div>
+                      <div onClick={()=>onRemove(data?.id)} className='cursor-pointer'><Trash size={28} color={"red"}/></div>
                     </div>
                     {/* <div
               className="mt-10 mr-8 text-zinc-500 text-sm font-bold cursor-pointer  "
