@@ -167,6 +167,7 @@ const Categories = () => {
             setFilterValues={setFilterValues}
             bookCondition={bookCondition}
             setBookCondition={setBookCondition}
+            side="right"
           />
         </div>
       </div>

@@ -40,11 +40,12 @@ const BookDetails = ({
   control,
   isDisabled,
   uploadedImages,
-  setUploadedImages
+  setUploadedImages,
+  data
 }) => {
   const values = getValues()
-  console.log({ values })
-  const data = useSelector((state) => state?.bookInfo)
+  console.log({ values,data })
+  // const data = useSelector((state) => state?.bookInfo)
   const [selectedOption, setSelectedOption] = useState(values?.bookCondition)
   const [category, setCategory] = useState(values?.category)
 
@@ -65,6 +66,14 @@ const BookDetails = ({
     setUploadedImages(newImages)
   }
 
+  useEffect(()=>{
+    if(data){
+      setSelectedOption(data?.bookCondition)
+      setCategory(data?.category)
+      
+    }
+  },[data])
+console.log({uploadedImages})
   return (
     <div className="  grow shrink basis-0 justify-start  flex flex-col md:flex-row">
       <div className="flex-2">
@@ -108,6 +117,7 @@ const BookDetails = ({
           <Controller
             name="title"
             control={control}
+            
             render={({ field }) => (
               <input
                 {...field}
@@ -153,6 +163,7 @@ const BookDetails = ({
               ISBN
             </p>
             <input
+            defaultValue={data?.isbn}
               {...register('isbn')}
               id="isbn"
               name="isbn"
@@ -160,7 +171,7 @@ const BookDetails = ({
               placeholder="User Name"
               required
               className=" w-full py-3 outline-none border border-stone-300 rounded-xl px-4 text-sm"
-              defaultValue={data?.isbn}
+              
               disabled={isDisabled}
             />
           </div>

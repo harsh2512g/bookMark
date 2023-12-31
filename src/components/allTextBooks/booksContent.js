@@ -45,7 +45,7 @@ const BooksContent = ({ collection }) => {
         <>
           <div className="mb-6 mt-6 max-w-7xl  justify-start items-center gap-10 md:inline-flex">
             <Image
-              src={d?.urls[0]}
+              src={d?.images[0]}
               height={10}
               width={150}
               className=" shadow-lg mb-3"

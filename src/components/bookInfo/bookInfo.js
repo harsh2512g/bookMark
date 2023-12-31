@@ -7,8 +7,7 @@ import { firebaseGetDoc } from '@/firebase/auth/signup'
 import { v4 as uuidv4 } from 'uuid'
 import Cookies from 'js-cookie'
 import {
-  firebaseAddBookInCart,
-  firebaseGetDocs,
+ 
   firebaseUpdateCartDoc,
 } from '@/firebase/utils'
 import { toast } from 'react-toastify'

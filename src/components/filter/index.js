@@ -14,6 +14,7 @@ function FilterDropdown({
   setFilterValues,
   bookCondition,
   setBookCondition,
+  side
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -34,7 +35,7 @@ function FilterDropdown({
       </div>
 
       {isOpen && (
-        <div className="p-10 absolute z-10 w-[350px] bg-white mt-2 border border-gray-300 rounded-[20px] shadow-lg">
+        <div className={`p-10 absolute ${side=="right" && "right-4"} z-10 w-[350px] bg-white mt-2 border border-gray-300 rounded-[20px] shadow-lg`}>
           <PriceRange
             filterValues={filterValues}
             setFilterValues={setFilterValues}

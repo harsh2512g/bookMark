@@ -1,8 +1,11 @@
 import createdDate from '@/utils/common'
 import Image from 'next/image'
 import React from 'react'
+import { useRouter } from 'next/navigation';
 
 const MyListing = ({ myListingBooks }) => {
+  const router=useRouter()
+  console.log({myListingBooks})
   return (
     <div className="p-8">
       <p className="text-zinc-800 text-xl font-bold">My Listing</p>
@@ -30,7 +33,7 @@ const MyListing = ({ myListingBooks }) => {
                 <p className="text-zinc-800 text-sm font-medium mt-2">
                   Listed on {createdDate(d?.created_at)}
                 </p>
-                <p className="text-neutral-500 text-sm font-bold mt-2 ">
+                <p onClick={()=>router.push(`/uploadBook?bookId=${d?.id}`)} className="cursor-pointer text-neutral-500 text-sm font-bold mt-2 ">
                   {' '}
                   Edit Listing
                 </p>

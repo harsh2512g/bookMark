@@ -9,7 +9,7 @@ import {
 import { toast } from 'react-toastify'
 import { auth, firebase } from '../app'
 import { firestore } from '../firestore'
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
 
 export async function firebasesignUp({ username, email, password }) {
   console.log({ username, email, password })
@@ -102,8 +102,23 @@ export async function firebaseAddBookDetails(data, id) {
     const res = await setDoc(doc(firestore, 'books', `${id}`), data)
     return true
   } catch (error) {
-    console.log('error 222 utilss: ', error)
+    console.log('error 222 utils: ', error)
     return false
+  }
+}
+
+export async function firebaseUpdateBookDetails(data, id) {
+  console.log({ data, id })
+  try {
+   
+    const docRef = doc(firestore, 'books', `${id}`);
+    await updateDoc(docRef, data);
+
+
+    return true;
+  } catch (error) {
+    console.log('error in updating document: ', error);
+    return false;
   }
 }
 

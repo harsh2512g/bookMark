@@ -14,9 +14,10 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/authContext'
 import { MagnifyingGlass, ShoppingCartSimple } from '@phosphor-icons/react'
 const navigation = [
-  { name: 'How it Works', href: '/about' },
+ 
   { name: 'Marketplace', href: '/marketplace' },
   { name: 'Contact Us', href: '/contact' },
+  { name: 'SellTextbooks', href: '/uploadBook' },
 ]
 
 export function Header() {
@@ -138,14 +139,7 @@ export function Header() {
           </div>
         )}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
-          {homePage && (
-            <Link
-              href="/uploadBook"
-              className="text-green-700 text-lg font-bold mr-5"
-            >
-              Sell Textbooks
-            </Link>
-          )}
+         
           <Link
             href="/cart"
             className="text-sm font-semibold leading-6 mx-3 text-white mr-5"
