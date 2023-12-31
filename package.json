@@ -13,6 +13,7 @@
         "@heroicons/react": "^2.0.18",
         "@hubspot/api-client": "^9.0.0",
         "@material-tailwind/html": "^2.0.0",
+        "@netlify/plugin-nextjs": "^4.41.3",
         "@novu/node": "^0.14.0",
         "@phosphor-icons/react": "^2.0.13",
         "@radix-ui/react-checkbox": "^1.0.4",
